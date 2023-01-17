@@ -1,0 +1,62 @@
+<img src="teamLogo.png" alt="Team Logo"  />
+<input type="search" id="search_val" placeholder="Search.." name="search" >
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="headerPage.css">
+<button type="submit" onclick="searchFunction()" id="search_button" ><i class="fa fa-search"></i></button>
+<br/>
+<select name="cats1" id="cats1" onchange="categoryAPICall()" style="left: 0; ">
+  <option value="">Select</option>
+  <option value="Cat2">cat2</option>
+  <option value="cat3">cat3</option>
+  <option value="cat4">cat4</option>
+</select>
+
+<select name="cats2" id="cats2" onchange="categoryAPICall()" style="left: 100; display: none;">
+    <option value="">Select</option>
+    <option value="Cat2">cat2</option>
+    <option value="cat3">cat3</option>
+    <option value="cat4">cat4</option>
+  </select>
+
+<!-- 
+<select name="cats2" id="cats2" style="position: absolute;  border: solid; bottom: 10;   left: 200; ">
+    <option value="cat1">Category3</option>
+    <option value="Cat2">cat2</option>
+    <option value="cat3">cat3</option>
+    <option value="cat4">cat4</option>
+</select> -->
+
+<script type="text/javascript">
+	function categoryAPICall(){
+    
+		var cat1_value = document.getElementById("cats1").value;
+    var cat2_value = document.getElementById("cats2").value;
+		fetch('https://bf71dea9-0477-42c5-9aab-7893926a7fa5.mock.pstmn.io/testpost', {
+			method: 'POST',
+      mode : 'cors',
+			headers: {
+        'Access-Control-Allow-Origin':'*',
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ "cat1" : cat1_value, "cat2" :  cat2_value})
+		}).then(response => response.json()).then(response => console.log(JSON.stringify(response))).then(()=>document.getElementById("cats2").style.display="block")
+	}
+
+
+
+  function searchFunction(){
+    var search_val = document.getElementById("search_val").value;
+    
+    fetch('https://bf71dea9-0477-42c5-9aab-7893926a7fa5.mock.pstmn.io/testpost', {
+			method: 'POST',
+      mode : 'cors',
+			headers: {
+        'Access-Control-Allow-Origin':'*',
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ "search_value" : search_val})
+		}).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
+  }
+</script>

@@ -1,0 +1,43 @@
+select{
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-bottom: 5px;
+
+    font-size:medium;
+    background-color: grey;
+    color:white;
+    border: 2px solid blue ;
+    border-style: outset;
+    position: absolute;  
+    border: solid; 
+    bottom: 8;   
+    
+}
+
+select:hover{
+    background-color: black;
+    color:white;
+}
+
+img{
+    float: left;
+    position: absolute;
+    height: 60%;
+    width : 8%;
+}
+
+
+
+#search_button{
+    position: absolute; 
+    right:10px;
+    height:20%;
+}
+
+#search_val{
+    width:30%;
+    height:20%;
+    position:absolute; 
+    right:40px;
+}
