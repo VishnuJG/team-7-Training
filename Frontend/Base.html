@@ -65,16 +65,19 @@
                 })
             }
             else if(prod_query!=null){
+                
+		
                 var product_block=document.getElementById("product_list");
-                fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products/q=${prod_query}`, {
-                    method: 'GET',
-                    mode : 'cors',
-                            headers: {
-                        'Access-Control-Allow-Origin':'*',
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                }).then(response => response.json()).then((data)=>{
+                fetch(`https://6d5a1111-cebb-459b-a072-32d9009ccafd.mock.pstmn.io/search-products?q=${prod_query}`, {
+			    method: 'POST',
+                mode : 'cors',
+			    headers: {
+                'Access-Control-Allow-Origin':'*',
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			    },
+			    body: JSON.stringify({ "q" : prod_query})
+            }).then(response => response.json()).then((data)=>{
                     for (const prod of data){
                         var tempid=String(prod.uniqueId);
                         product_block.innerHTML+=`

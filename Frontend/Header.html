@@ -5,7 +5,7 @@
 <button type="submit" onclick="searchFunction()" id="search_button" ><i class="fa fa-search"></i></button>
 <br/>
 <select name="cats1" id="cats1" onchange="categoryAPICall()" style="left: 0; ">
-  <option value="">Select</option>
+  <option value="" selected disabled hidden>MEN</option>
   <option value="New Arrivals">New Arrivals</option>
   <option value="Labels We Love">Labels We Love</option>
   <option value="Tops">Tops</option>
@@ -20,7 +20,7 @@
 </select>
 
 <select name="cats2" id="cats2" onchange="categoryAPICall()" style="left: 220; ">
-    <option value="">Select</option>
+    <option value="" selected disabled hidden>WOMEN</option>
     <option value="Clearance  Women">Clearance  Women</option>
     <option value="Tops">Tops</option>
     <option value="Jeans">Jeans</option>
@@ -82,8 +82,8 @@
 
   function searchFunction(){
     var search_val = document.getElementById("search_val").value;
-    
-    fetch('https://bf71dea9-0477-42c5-9aab-7893926a7fa5.mock.pstmn.io/testpost', {
+    window.parent.location=`Base.html?q=${search_val}`;
+    fetch('https://d9925e8d-3919-4ca2-bb42-2b029db700b4.mock.pstmn.io', {
 			method: 'POST',
       mode : 'cors',
 			headers: {
