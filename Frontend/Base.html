@@ -35,32 +35,87 @@
         window.onload=function(){
             
             //var img_url=["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGRyZXNzZXN8ZW58MHx8MHx8&w=1000&q=80","https://images.unsplash.com/photo-1568251188392-ae32f898cb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZWxlZ2FudCUyMGRyZXNzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"]
-            var product_block=document.getElementById("product_list")
-            console.log("hi")
-            fetch('https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products', {
-                method: 'GET',
-                mode : 'cors',
-                        headers: {
-                    'Access-Control-Allow-Origin':'*',
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-            }).then(response => response.json()).then((data)=>{
-                for (const prod of data){
-                    var tempid=String(prod.uniqueId);
-                    product_block.innerHTML+=`
-                    <div class="card" onclick="productClickHandler('${tempid}', '${prod.productImage}', '${prod.price}', '${prod.title}', '${prod.productDescription}')">
-                        <img id="product_image" src=`+ prod.productImage+`/><br/>
-                        <p id="price" >₹ ${prod.price}</p>
-                        <p id="desc">${prod.title}</p>
-                    </div> `
-                
-                }
-            })
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const cat1_value = urlParams.get('cat1');
+            const cat2_value =urlParams.get('cat2');
+            const prod_query =urlParams.get('q');
+
+            if (cat1_value!=null){
+                var product_block=document.getElementById("product_list");
+                fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products?cat1=${cat1_value}&cat2=${cat2_value}`, {
+                    method: 'GET',
+                    mode : 'cors',
+                            headers: {
+                        'Access-Control-Allow-Origin':'*',
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                }).then(response => response.json()).then((data)=>{
+                    for (const prod of data){
+                        var tempid=String(prod.uniqueId);
+                        product_block.innerHTML+=`
+                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                            <img id="product_image" src=`+ prod.productImage+`/><br/>
+                            <p id="price" >₹ ${prod.price}</p>
+                            <p id="desc">${prod.title}</p>
+                        </div> `
+                    
+                    }
+                })
+            }
+            else if(prod_query!=null){
+                var product_block=document.getElementById("product_list");
+                fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products/q=${prod_query}`, {
+                    method: 'GET',
+                    mode : 'cors',
+                            headers: {
+                        'Access-Control-Allow-Origin':'*',
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                }).then(response => response.json()).then((data)=>{
+                    for (const prod of data){
+                        var tempid=String(prod.uniqueId);
+                        product_block.innerHTML+=`
+                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                            <img id="product_image" src=`+ prod.productImage+`/><br/>
+                            <p id="price" >₹ ${prod.price}</p>
+                            <p id="desc">${prod.title}</p>
+                        </div> `
+                    
+                    }
+                })
+            }
+            else{
+                var product_block=document.getElementById("product_list");
+                fetch('https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products', {
+                    method: 'GET',
+                    mode : 'cors',
+                            headers: {
+                        'Access-Control-Allow-Origin':'*',
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                }).then(response => response.json()).then((data)=>{
+                    for (const prod of data){
+                        var tempid=String(prod.uniqueId);
+                        product_block.innerHTML+=`
+                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                            <img id="product_image" src=`+ prod.productImage+`/><br/>
+                            <p id="price" >₹ ${prod.price}</p>
+                            <p id="desc">${prod.title}</p>
+                        </div> `
+                    
+                    }
+                })
+            }
+            
             
         }
 
         function productClickHandler(id, prod_img, price, title, desc){
+            window.open('https://www.3schools.in','_self');
             document.getElementById("product_list").style.display="none";
             var prod_div = document.getElementById("unique_product_container");
             prod_div.style.display="block";
@@ -75,5 +130,7 @@
             `;
 
         }
+        
+        
     </script>
 </html>
