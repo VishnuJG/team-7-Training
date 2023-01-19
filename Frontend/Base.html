@@ -91,16 +91,16 @@
                 
 		
                 var product_block=document.getElementById("product_list");
-                fetch(`https://6d5a1111-cebb-459b-a072-32d9009ccafd.mock.pstmn.io/search-products?q=${prod_query}`, {
-			    method: 'POST',
+                fetch(`http://127.0.0.1:5000/product-query?q=${prod_query}`, {
+			    method: 'GET',
                 mode : 'cors',
 			    headers: {
                 'Access-Control-Allow-Origin':'*',
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
-			    },
-			    body: JSON.stringify({ "q" : prod_query})
-            }).then(response => response.json()).then((data)=>{
+			    }}).then(response => response.json()).then((data)=>{
+                    console.log(typeof(data))
+                    console.log(data)
                     for (const prod of data){
                         var tempid=String(prod.uniqueId);
                         product_block.innerHTML+=`
