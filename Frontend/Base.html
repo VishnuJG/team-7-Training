@@ -10,12 +10,18 @@
 <body>
     <iframe src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
     
-    
+    <select name="sort-button" id="sort-button" onchange="categoryAPICall()" style="left: 220; ">
+        <option value="" selected disabled hidden>Sort</option>
+        <option value="priceAsc">Price-Asc</option>
+        <option value="priceDesc">Price-Desc</option>
+        <option value="Relevance">Relevance</option>
+      </select>
     <div class="products_container" id="product_list">
     </div>
 
-    <div class="unique_product_container" id = "unique_product_container" style="display: none;">
-    </div>
+    
+
+    
 
 </body>
     <script type="text/javascript">
@@ -117,22 +123,22 @@
             
         }
 
-        function productClickHandler(id, prod_img, price, title, desc){
-            window.open('https://www.3schools.in','_self');
-            document.getElementById("product_list").style.display="none";
-            var prod_div = document.getElementById("unique_product_container");
-            prod_div.style.display="block";
-            // prod_div.appendChild(document.createTextNode("Hi prod page : "+id));
-            prod_div.innerHTML+=`
-                <div class="unique_product_card">
-                    <img class="unique_product_image" src="${prod_img}" />
-                    <h1 class="unique_product_title"> ${title}</h1><h2 class="unique_product_price"><strong>₹ ${price}</strong></h2><br/>
-                    <h3 class="unique_product_description">${desc}</h3>
+        // function productClickHandler(id, prod_img, price, title, desc){
+        //     window.open('https://www.3schools.in','_self');
+        //     document.getElementById("product_list").style.display="none";
+        //     var prod_div = document.getElementById("unique_product_container");
+        //     prod_div.style.display="block";
+        //     // prod_div.appendChild(document.createTextNode("Hi prod page : "+id));
+        //     prod_div.innerHTML+=`
+        //         <div class="unique_product_card">
+        //             <img class="unique_product_image" src="${prod_img}" />
+        //             <h1 class="unique_product_title"> ${title}</h1><h2 class="unique_product_price"><strong>₹ ${price}</strong></h2><br/>
+        //             <h3 class="unique_product_description">${desc}</h3>
                     
-                </div>
-            `;
+        //         </div>
+        //     `;
 
-        }
+        // }
         
         
     </script>
