@@ -1,11 +1,26 @@
+
+
+<!-- *** Team logo *** -->
 <img src="teamLogo.png" alt="Team Logo"/>
-<input type="search" id="search_val" placeholder="Search.." name="search" >
+
+
+<!-- Header page js -->
+<script src="headerPage.js"></script>
+
+<!-- Awesome fonts for search button and header page css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="headerPage.css">
+
+
+<!-- Search field and submit button for the same -->
+<input type="search" id="search_val" placeholder="Search.." name="search">
 <button type="submit" onclick="searchFunction()" id="search_button" ><i class="fa fa-search"></i></button>
 <br/>
-<select name="cats1" id="cats1" onchange="categoryAPICall()" style="left: 0; ">
+
+<!-- Drop down for Category Men  -->
+<select name="cats1" id="cats1" onchange="categoryAPICall('men')" style="left: 0; ">
   <option value="" selected disabled hidden>MEN</option>
+  <option value="">All</option>
   <option value="New Arrivals">New Arrivals</option>
   <option value="Labels We Love">Labels We Love</option>
   <option value="Tops">Tops</option>
@@ -19,8 +34,11 @@
   <option value="Accessories">Accessories</option>
 </select>
 
-<select name="cats2" id="cats2" onchange="categoryAPICall()" style="left: 220; ">
+
+<!-- Drop down for Category Women -->
+<select name="cats2" id="cats2" onchange="categoryAPICall('women')" style="left: 220; ">
     <option value="" selected disabled hidden>WOMEN</option>
+    <option value="">All</option>
     <option value="Clearance  Women">Clearance  Women</option>
     <option value="Tops">Tops</option>
     <option value="Jeans">Jeans</option>
@@ -38,61 +56,9 @@
     <option value="Labels We Love">Labels We Love</option>
   </select>
 
-  <button type="button" class="exp-button " onclick="expAPIhandler()">EXP</button>
 
-<script type="text/javascript">
-  
-
-
-	function categoryAPICall(){
-    
-		var cat1_value = document.getElementById("cats1").value;
-    var cat2_value = document.getElementById("cats2").value;
-    window.parent.location=`Base.html?cat1=${cat1_value}&cat2=${cat2_value}`;
-		fetch('https://bf71dea9-0477-42c5-9aab-7893926a7fa5.mock.pstmn.io/testpost', {
-			method: 'POST',
-      mode : 'cors',
-			headers: {
-        'Access-Control-Allow-Origin':'*',
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ "cat1" : cat1_value, "cat2" :  cat2_value})
-		}).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
-	}
+  <!-- EXP as a seperate category has a button only -->
+  <button type="button" class="exp-button " onclick="categoryAPICall('exp')">EXP</button>
 
 
-  function expAPIhandler(){
-    
-		var cat1_value="exp";
-    var cat2_value="";
-    window.parent.location=`Base.html?cat1=${cat1_value}&cat2=${cat2_value}`;
-		fetch('https://bf71dea9-0477-42c5-9aab-7893926a7fa5.mock.pstmn.io/testpost', {
-			method: 'POST',
-      mode : 'cors',
-			headers: {
-        'Access-Control-Allow-Origin':'*',
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ "cat1" : cat1_value, "cat2" :  cat2_value})
-		}).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
-	}
-
-
-  function searchFunction(){
-    var search_val = document.getElementById("search_val").value;
-    window.parent.location=`Base.html?q=${search_val}`;
-    fetch('https://d9925e8d-3919-4ca2-bb42-2b029db700b4.mock.pstmn.io', {
-			method: 'POST',
-      mode : 'cors',
-			headers: {
-        'Access-Control-Allow-Origin':'*',
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ "search_value" : search_val})
-		}).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
-  }
-</script>
  

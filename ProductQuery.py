@@ -11,11 +11,11 @@ CORS(app)
 @app.route('/product-query')
 def productQuery():
     query_val = request.args.get('q', default="", type=str)
-    
-    unbxd_val = requests.get('https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q={}'.format(query_val)).content
+    page_val = request.args.get('page', default="1", type = str)
+    unbxd_val = requests.get('https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q={}&page={}'.format(query_val, page_val)).content
     unbxd_val = json.loads(unbxd_val)
     
-    return unbxd_val['response']['products']
+    return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
 
 
 

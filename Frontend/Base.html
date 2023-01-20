@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="categoryPage.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
         </script>
+        <script src="categoryPage.js"></script>
         
     </head>
     <body>
@@ -20,12 +21,17 @@
         </select>
         <div class="products_container" id="product_list">
         </div>
-        
+        <br/>
+        <div class="pagination-div">
+            <button id="page-left" class="pagination-button" disabled onclick="pageButtonHandler('left')"> &lt; </button>
+            <p id="page-num" class="pagination-button">1</p>
+            <button id="page-right" class="pagination-button" onclick="pageButtonHandler('right')"> &gt; </button>
+        </div>
 
     </body>
 
 
-
+    <!-- Jquery Script for sort functionality -->
     <script>
         
 
@@ -53,112 +59,5 @@
             $(".products_container").html(alphabeticallyOrderedDivs);
         });
     </script>
-    <script type="text/javascript">
-        
-        window.onload=function(){
-            
-            //var img_url=["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGRyZXNzZXN8ZW58MHx8MHx8&w=1000&q=80","https://images.unsplash.com/photo-1568251188392-ae32f898cb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZWxlZ2FudCUyMGRyZXNzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"]
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const cat1_value = urlParams.get('cat1');
-            const cat2_value =urlParams.get('cat2');
-            const prod_query =urlParams.get('q');
-
-            if (cat1_value!=null){
-                var product_block=document.getElementById("product_list");
-                fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products?cat1=${cat1_value}&cat2=${cat2_value}`, {
-                    method: 'GET',
-                    mode : 'cors',
-                            headers: {
-                        'Access-Control-Allow-Origin':'*',
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                }).then(response => response.json()).then((data)=>{
-                    for (const prod of data){
-                        var tempid=String(prod.uniqueId);
-                        product_block.innerHTML+=`
-                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                            <img id="product_image" src=`+ prod.productImage+`/><br/>
-                            <p>₹ <span id="price">${prod.price}</span></p>
-                            <p id="desc">${prod.title}</p>
-                        </div> `
-                    
-                    }
-                })
-            }
-            else if(prod_query!=null){
-                
-		
-                var product_block=document.getElementById("product_list");
-                fetch(`http://127.0.0.1:5000/product-query?q=${prod_query}`, {
-			    method: 'GET',
-                mode : 'cors',
-			    headers: {
-                'Access-Control-Allow-Origin':'*',
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			    }}).then(response => response.json()).then((data)=>{
-                    console.log(typeof(data))
-                    console.log(data)
-                    for (const prod of data){
-                        var tempid=String(prod.uniqueId);
-                        product_block.innerHTML+=`
-                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                            <img id="product_image" src=`+ prod.productImage+`/><br/>
-                            <p>₹ <span id="price">${prod.price}</span></p>
-                            <p id="desc">${prod.title}</p>
-                        </div> `
-                    
-                    }
-                })
-            }
-            else{
-                var product_block=document.getElementById("product_list");
-                fetch('https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products', {
-                    method: 'GET',
-                    mode : 'cors',
-                            headers: {
-                        'Access-Control-Allow-Origin':'*',
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                }).then(response => response.json()).then((data)=>{
-                    for (const prod of data){
-                        var tempid=String(prod.uniqueId);
-                        product_block.innerHTML+=`
-                        <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                            <img id="product_image" src=`+ prod.productImage+`/><br/>
-                            <p >₹ <span id="price">${prod.price}</span></p>
-                            <p id="desc">${prod.title}</p>
-                        </div> `
-                    
-                    }
-                })
-            }
-            
-            
-        }
-        
-        
-
-        // function productClickHandler(id, prod_img, price, title, desc){
-        //     window.open('https://www.3schools.in','_self');
-        //     document.getElementById("product_list").style.display="none";
-        //     var prod_div = document.getElementById("unique_product_container");
-        //     prod_div.style.display="block";
-        //     // prod_div.appendChild(document.createTextNode("Hi prod page : "+id));
-        //     prod_div.innerHTML+=`
-        //         <div class="unique_product_card">
-        //             <img class="unique_product_image" src="${prod_img}" />
-        //             <h1 class="unique_product_title"> ${title}</h1><h2 class="unique_product_price"><strong>₹ ${price}</strong></h2><br/>
-        //             <h3 class="unique_product_description">${desc}</h3>
-                    
-        //         </div>
-        //     `;
-
-        // }
-        
-        
-    </script>
+   
 </html>

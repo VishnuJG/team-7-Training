@@ -50,3 +50,17 @@ img#product_image {
     top:50px;
     height:3%;
 }
+
+.pagination-div{
+    bottom:0px;
+    left : 50%;
+    position : sticky;
+    align-items: center;
+    width:100%; 
+    margin:100 auto;
+}
+
+.pagination-button{
+    float:left;
+    margin-right: 30px;
+}
