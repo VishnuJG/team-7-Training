@@ -11,28 +11,38 @@
         
     </head>
     <body>
+        <!-- Header file included as an iframe -->
         <iframe src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
         
-        <select name="sort-button" id="sort-button" style="left: 220; ">
-            <option value="" selected disabled hidden>Sort</option>
-            <option value="priceAsc">Price-Asc</option>
-            <option value="priceDesc">Price-Desc</option>
-            <option value="Relevance">Relevance</option>
+        <!-- Sort buttons based on price -->
+        <select name="sort-button" id="sort-button" style="left: 220; " onchange="sortHandler()">
+            <option value="" selected disabled hidden >Sort</option>
+            <option value="price asc">Price-Asc</option>
+            <option value="price desc">Price-Desc</option>
         </select>
+
+        <!-- Div container having all the product cards to be displayed -->
         <div class="products_container" id="product_list">
         </div>
+
         <br/>
-        <div class="pagination-div">
+        <br/>
+        <br/>
+
+
+        <!-- Page shifting buttons for next page and previous page -->
+        <div class="pagination-div" style="display:none" id="pagination-div">
             <button id="page-left" class="pagination-button" disabled onclick="pageButtonHandler('left')"> &lt; </button>
             <p id="page-num" class="pagination-button">1</p>
             <button id="page-right" class="pagination-button" onclick="pageButtonHandler('right')"> &gt; </button>
+            <p id="total-products" class="pagination-button"></p>
         </div>
 
     </body>
 
 
     <!-- Jquery Script for sort functionality -->
-    <script>
+    <!-- <script>
         
 
         $('#sort-button').change(function () {
@@ -58,6 +68,6 @@
             console.log(divs)
             $(".products_container").html(alphabeticallyOrderedDivs);
         });
-    </script>
+    </script> -->
    
 </html>
