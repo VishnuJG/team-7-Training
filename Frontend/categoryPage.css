@@ -57,7 +57,10 @@ img#product_image {
     position : sticky;
     align-items: center;
     width:100%; 
-    margin:100 auto;
+    margin-left:200;
+    box-shadow: 0 0 5px rgba(0,0,0,.05), 6px 5px 5px rgba(0,0,0,.1);
+    border-radius: 4px;
+    /* float : right; */
 }
 
 .pagination-button{

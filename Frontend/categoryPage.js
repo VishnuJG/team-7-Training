@@ -2,63 +2,44 @@
 window.onload=function(){
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
+    var params_dict = urlParams.entries();
     var cat1_value = urlParams.get('cat1');
     var cat2_value =urlParams.get('cat2');
     var prod_query =urlParams.get('q');
-    var page_number=urlParams.get('page');
+    var page_number = (urlParams.has('page'))? Number(urlParams.get('page')) : 1;  //required by onLoadSearchQueryHandler()
 
 
     if (cat1_value!=null){
-        var product_block=document.getElementById("product_list");
-        fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products?cat1=${cat1_value}&cat2=${cat2_value}`, {
-            method: 'GET',
-            mode : 'cors',
-                    headers: {
-                'Access-Control-Allow-Origin':'*',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-        }).then(response => response.json()).then((data)=>{
-            for (const prod of data){
-                var tempid=String(prod.uniqueId);
-                product_block.innerHTML+=`
-                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                    <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p>$ <span id="price">${prod.price}</span></p>
-                    <p id="desc">${prod.title}</p>
-                </div> `
+        // var product_block=document.getElementById("product_list");
+        // fetch(`https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products?cat1=${cat1_value}&cat2=${cat2_value}`, {
+        //     method: 'GET',
+        //     mode : 'cors',
+        //             headers: {
+        //         'Access-Control-Allow-Origin':'*',
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //             }
+        // }).then(response => response.json()).then((data)=>{
+        //     for (const prod of data){
+        //         var tempid=String(prod.uniqueId);
+        //         product_block.innerHTML+=`
+        //         <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+        //             <img id="product_image" src=`+ prod.productImage+`/><br/>
+        //             <p>$ <span id="price">${prod.price}</span></p>
+        //             <p id="desc">${prod.title}</p>
+        //         </div> `
             
-            }
-        })
+        //     }
+        // })
+        onLoadCategoryHandler(params_dict, page_number)
     }
     else if(prod_query!=null){
-        var product_block=document.getElementById("product_list");
-        fetch(`http://127.0.0.1:5000/product-query?q=${prod_query}&page=${page_number}`, {
-        method: 'GET',
-        mode : 'cors',
-        headers: {
-        'Access-Control-Allow-Origin':'*',
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        }}).then(response => response.json()).then((data)=>{
-            console.log(typeof(data))
-            console.log(data)
-            for (const prod of data[1]){
-                var tempid=String(prod.uniqueId);
-                product_block.innerHTML+=`
-                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                    <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p>$ <span id="price">${prod.price}</span></p>
-                    <p id="desc">${prod.title}</p>
-                </div> `
-            
-            }
-            console.log(data[0])
-            paginationHandler(data[0], page_number)
-        })
+        
+        onLoadSearchQueryHandler(params_dict, page_number)
         
     }
     else{
+        // if neither search or category then just get random products
         var product_block=document.getElementById("product_list");
         fetch('https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products', {
             method: 'GET',
@@ -80,14 +61,80 @@ window.onload=function(){
             
             }
         })
+        
     }
     
     
 }
 
+function onLoadSearchQueryHandler(params_dict, page_number){
+    var product_block=document.getElementById("product_list");
+    var final_search_query = `http://127.0.0.1:5000/product-query?`;
+    
+    
+    for(const param of params_dict){
+        final_search_query+=`${param[0]}=${param[1]}&`;
+    }
+
+    fetch(final_search_query, {
+        method: 'GET',
+        mode : 'cors',
+        headers: {
+        'Access-Control-Allow-Origin':'*',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        }}).then(response => response.json()).then((data)=>{
+            
+            for (const prod of data[1]){
+                var tempid=String(prod.uniqueId);
+                product_block.innerHTML+=`
+                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                    <img id="product_image" src=`+ prod.productImage+`/><br/>
+                    <p>$ <span id="price">${prod.price}</span></p>
+                    <p id="desc">${prod.title}</p>
+                </div> `
+            
+            }
+            console.log(data[0])
+            paginationHandler(data[0], page_number)
+        })
+}
+
+function onLoadCategoryHandler(params_dict, page_number){
+    var product_block=document.getElementById("product_list");
+    var final_search_query = `https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products?`;
+    
+    
+    for(const param of params_dict){
+        final_search_query+=`${param[0]}=${param[1]}&`;
+    }
+
+    fetch(final_search_query, {
+        method: 'GET',
+        mode : 'cors',
+        headers: {
+        'Access-Control-Allow-Origin':'*',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        }}).then(response => response.json()).then((data)=>{
+            
+            for (const prod of data){
+                var tempid=String(prod.uniqueId);
+                product_block.innerHTML+=`
+                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                    <img id="product_image" src=`+ prod.productImage+`/><br/>
+                    <p>$ <span id="price">${prod.price}</span></p>
+                    <p id="desc">${prod.title}</p>
+                </div> `
+            
+            }
+            paginationHandler(100, page_number); //(number_of_products, page_number)
+        })
+}
 
 // Handles enabling and disabling button based on number of products left
 function paginationHandler(number_of_products, page_number){
+    document.getElementById("pagination-div").style.display='block';
     var whole_pages = Math.floor(number_of_products/10);
     var reminder_page = number_of_products%10;
     if(page_number=='1'){
@@ -100,32 +147,74 @@ function paginationHandler(number_of_products, page_number){
     if(Number(page_number)==whole_pages && Number(reminder_page)==0){
         document.getElementById("page-right").disabled = true;
     }
-    else if(Number(page_number)>=whole_pages && Number(reminder_page)!=0){
+    else if(Number(page_number)>whole_pages && Number(reminder_page)!=0){
         document.getElementById("page-right").disabled = true;
     }
     else{
         document.getElementById("page-right").disabled = false;   
     }
-    if (Number(page_number) > whole_pages+1){
-        window.open("https://jgvishnu.github.io/")
+
+    if ((Number(page_number) > whole_pages+1) || Number(page_number) < 1){
+        window.open("Page404.html", '_self')
     }
     document.getElementById("page-num").innerHTML=page_number;
+    document.getElementById("total-products").innerHTML=`Showing ${(page_number*10)-9} - ${((page_number*10)<=number_of_products)?(page_number*10): ((page_number*10)-10+(number_of_products%10))} of ${number_of_products} products`;
 }
-
 
 
 // Redirects the page to the next page
 function pageButtonHandler(side){
+
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
+    var params_dict = urlParams.entries();
     var search_val = urlParams.get('q');
-    var cur_page_num = Number(urlParams.get('page'));
+    var cur_page_num = (urlParams.has('page'))? Number(urlParams.get('page')) : 1;
+
+    var final_search_query = `Base.html?`;
+    
+    
+    for(const param of params_dict){
+        if(param[0]=='page'){
+            continue;
+        }
+        else{
+            final_search_query+=`${param[0]}=${param[1]}&`;
+        }
+        
+    }
 
     if(side == 'left'){
         
-        window.location=`Base.html?q=${search_val}&page=${cur_page_num-1}`;
+        window.location=`${final_search_query}page=${cur_page_num - 1}`;
     }
     else{
-        window.location=`Base.html?q=${search_val}&page=${cur_page_num+1}`;   
+        window.location=`${final_search_query}page=${cur_page_num + 1}`;   
     }
+}
+
+
+function sortHandler(){
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var params_dict = urlParams.entries();
+    var final_search_query=`Base.html?`;
+    for(const param of params_dict){
+        console.log(param);
+        if(param[0]=='sort'){
+            continue;
+        }
+        else if(param[0]=='page'){
+            final_search_query+=`${param[0]}=1&`;
+        }
+        else{
+            final_search_query+=`${param[0]}=${param[1]}&`;
+        }
+        
+    }
+    console.log(final_search_query);
+    
+    var sort_operation = document.getElementById("sort-button").value;
+    window.location=final_search_query+`sort=${sort_operation}`;
+    
 }
