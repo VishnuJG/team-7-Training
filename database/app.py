@@ -4,6 +4,7 @@ from datetime import datetime
 import psycopg2
 import json 
 from queries import *
+import ast
 
 
 def get_db_connection():
@@ -20,7 +21,7 @@ def populate_db():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(CREATE_PRODUCT_TABLE)
-    #   cur.execute(CREATE_CATEGORY_TABLE)
+    cur.execute(CREATE_CATEGORY_TABLE)
     product_no = 0
     for i in data: 
         # print("IIIIIII", i)
@@ -31,9 +32,24 @@ def populate_db():
         try:
             description=i['productDescription']
         except:
-            description=""
+            description=" "
         img_url=i['productImage']
-        cur.execute("INSERT INTO product_table (uniqueId, title, description, price, image_url) VALUES(%s, %s, %s, %s, %s);", (uniqueId, title, description, price, img_url))
+
+        #Assign category ID
+        catlevel1Name = i['catlevel1Name']
+        catlevel2Name = i['catlevel2Name']
+
+        #Remove spaces in the category names
+        catlevel1Name = catlevel1Name.replace(" ", "")
+        catlevel2Name = catlevel2Name.replace(" ", "")
+        cur.execute(CATEGORY_ID_EXISTS, (catlevel2Name, catlevel1Name,))
+        category_flag = cur.fetchone()[0]
+        if category_flag == False:
+            cur.execute(INSERT_CATEGORY_ID, (catlevel2Name, catlevel1Name,))
+        cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name,))
+        category_id = cur.fetchone()[0]
+
+        cur.execute(INSERT_PRODUCT, (uniqueId, title, description, price, img_url, category_id))
         print("Product {} inserted", product_no+1)
     cur.execute(SELECT_ALL_PRODUCTS)
     prods = cur.fetchall()
@@ -44,35 +60,70 @@ def populate_db():
     conn.close()
     return "completed"
 
-    #   return render_template('index.html')
 
-
-# @app.get("/product-details/<string:uniqueID>")
 @app.route('/product-details', methods=['GET'])
-def find_product_details():
-  uniqueId = request.args.get('uniqueId')
-  product_details = {}
-  conn = get_db_connection()
-  cur = conn.cursor()
-  cur.execute(GET_PRODUCT, (uniqueId))
-  title = cur.fetchone()[1]
-  description = cur.fetchone()[2]
-  price = cur.fetchone()[3]
-  imageurl = cur.fetchone()[4]
-  product_details['title'] = title
-  product_details['description'] = description
-  product_details['price'] = price
-  product_details['imageurl'] = imageurl
-  return json.dumps(product_details)
+def get_product_details():
+    uniqueId = str(request.args.get("uniqueId"))
+    product_details = {}
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(GET_PRODUCT, (str(uniqueId),))
+    query_response = cur.fetchall()
+    
+    try:
+        title = query_response[0][1]
+        # print(title)
+        description = query_response[0][2]
+        # print(description)
+        price = str(query_response[0][3])
+        imageurl = query_response[0][4]
+    except:
+        title = " "
+        description = " "
+        price = " "
+        imageurl = " "
+    
+    product_details['title'] = title
+    product_details['description'] = description
+    product_details['price'] = price
+    product_details['imageurl'] = imageurl
+    print("Product request processed")  
+    return json.dumps(product_details)
 
 
-# @app.route('/product-details', methods=['GET'])
-# def get_cetegory_products():
-#   catlevel1Name = request.args.get()
+@app.route('/category', methods=['GET'])
+def get_category_products():
+    catlevel1Name = request.args.get('catlevel1Name')
+    catlevel2Name = request.args.get('catlevel2Name')
 
+    #Remove spaces in the category names
+    catlevel1Name = catlevel1Name.replace(" ", "")
+    catlevel2Name = catlevel2Name.replace(" ", "")
 
+    category_products = []
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name  ))
+    print(catlevel2Name, catlevel1Name)
+    
+    category_id = cur.fetchone()[0]
 
-
+    if type(category_id) == "NoneType":
+        print("Invalid category")
+    
+    
+    cur.execute(GET_CATEGORY_PRODUCTS, (category_id,))
+    for product in cur.fetchall():
+        # print(product)
+        product_details = {}
+        product_details['title'] = product[1]
+        product_details['description'] = product[2]
+        product_details['price'] = product[3]
+        product_details['imageurl'] = product[4]
+        print(product_details)
+        category_products.append(product_details)
+    print(category_products)
+    return json.dumps(product_details)
 
 
 @app.route('/delete/<string:id>')
