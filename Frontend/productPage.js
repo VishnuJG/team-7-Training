@@ -1,8 +1,8 @@
 
 
-// Handler to fetch data from the database API
+// Handler to fetch data pertaining to a single product from the database API
 window.onload=function(){
-    
+    document.getElementById("loader").style.display='block';
     var prod_div = document.getElementById("unique_product_container");
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -17,16 +17,22 @@ window.onload=function(){
         'Content-Type': 'application/json'
     }
     }).then(response => response.json()).then((data)=>{
-        var filtered_data=data[1][0];
-        var tempid=String(filtered_data.uniqueId);
-        prod_div.innerHTML+=`
-        <div class="unique_card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
-            <img id="product_image" src=`+ filtered_data.productImage+`/><br/>
-            <p id="price" >₹ ${filtered_data.price}</p>
-            <p id="title">${filtered_data.title}</p>
-            <p id="desc">${filtered_data.productDescription}</p>
-        </div> `;
-        
-        
-    })
+        try{
+            console.log(data)
+            var filtered_data=data[1][0];
+            var tempid=String(filtered_data.uniqueId);
+            prod_div.innerHTML+=`
+            <div class="unique_card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                <img id="product_image" src=`+ filtered_data.productImage+`/><br/>
+                <p id="price" >$ ${filtered_data.price}</p>
+                <p id="title">${ filtered_data.title.charAt(0).toUpperCase() + filtered_data.title.slice(1)}</p>
+                <p id="desc">${filtered_data.productDescription!=null ? filtered_data.productDescription : ""}</p>
+            </div> `;
+        }
+        catch(err){
+            // console.log(err);
+            window.location = "Page404.html";
+        }
+        document.getElementById("loader").style.display='none';  
+    }).catch(err=>window.location="Page500.html")
 }

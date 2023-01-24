@@ -21,8 +21,12 @@
             <option value="price desc">Price-Desc</option>
         </select>
 
+
+        <div  id="loader"><img class="loader" src="https://www.zilliondesigns.com/blog/wp-content/uploads/loading-the-truck.gif"/></div>
+
         <!-- Div container having all the product cards to be displayed -->
         <div class="products_container" id="product_list">
+           
         </div>
 
         <br/>
@@ -32,6 +36,9 @@
 
         <!-- Page shifting buttons for next page and previous page -->
         <div class="pagination-div" style="display:none" id="pagination-div">
+            <br/>
+            <br/>
+            <br/>
             <button id="page-left" class="pagination-button" disabled onclick="pageButtonHandler('left')"> &lt; </button>
             <p id="page-num" class="pagination-button">1</p>
             <button id="page-right" class="pagination-button" onclick="pageButtonHandler('right')"> &gt; </button>

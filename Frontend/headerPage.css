@@ -1,6 +1,8 @@
 body{
-    background-color: rgb(185, 180, 180);
+    background-color: rgba(214, 210, 210, 0.43);
     padding : 5px 10px;
+    box-shadow: 2px 5px 8px #726d6da3;
+    padding:5px
 }
 
 
@@ -65,4 +67,9 @@ img{
     bottom: 8;   
     text-overflow: ellipsis;
     left:440px;
+}
+
+.exp-button:hover{
+    background-color: black;
+    color:white;
 }
