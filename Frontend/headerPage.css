@@ -1,18 +1,27 @@
+body{
+    background-color: rgba(214, 210, 210, 0.43);
+    padding : 5px 10px;
+    box-shadow: 2px 5px 8px #726d6da3;
+    padding:5px
+}
+
+
 select{
     padding-left:10px;
     padding-right:10px;
     padding-top:5px;
     padding-bottom: 5px;
-
+    margin-left : 20px;
+    width:200px;
     font-size:medium;
-    background-color: grey;
+    background-color: rgb(107, 104, 104);
     color:white;
     border: 2px solid blue ;
     border-style: outset;
     position: absolute;  
     border: solid; 
     bottom: 8;   
-    
+    text-overflow: ellipsis;
 }
 
 select:hover{
@@ -28,7 +37,6 @@ img{
 }
 
 
-
 #search_button{
     position: absolute; 
     right:10px;
@@ -40,4 +48,28 @@ img{
     height:20%;
     position:absolute; 
     right:40px;
+}
+
+.exp-button{
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-bottom: 5px;
+    margin-left : 20px;
+    width:100px;
+    font-size:medium;
+    background-color: rgb(107, 104, 104);
+    color:white;
+    border: 2px solid blue ;
+    border-style: outset;
+    position: absolute;  
+    border: solid; 
+    bottom: 8;   
+    text-overflow: ellipsis;
+    left:440px;
+}
+
+.exp-button:hover{
+    background-color: black;
+    color:white;
 }

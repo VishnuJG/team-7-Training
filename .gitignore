@@ -2,10 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+node_modules
 # C extensions
 *.so
-
+package-lock.json
+package.json
 # Distribution / packaging
 .Python
 build/
@@ -127,5 +128,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
 .cz.json
 .pre-commit-config.yaml
+
+
+.DS_Store
+

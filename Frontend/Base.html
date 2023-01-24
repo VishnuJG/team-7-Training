@@ -1,79 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="categoryPage.css">
-    
-</head>
-<body>
-    <iframe src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
-    
-    
-    <div class="products_container" id="product_list">
-    </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="categoryPage.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+        </script>
+        <script src="categoryPage.js"></script>
+        
+    </head>
+    <body>
+        <!-- Header file included as an iframe -->
+        <iframe src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
+        
+        <!-- Sort buttons based on price -->
+        <select name="sort-button" id="sort-button" style="left: 220; " onchange="sortHandler()">
+            <option value="" selected disabled hidden >Sort</option>
+            <option value="price asc">Price-Asc</option>
+            <option value="price desc">Price-Desc</option>
+        </select>
 
-    <div class="unique_product_container" id = "unique_product_container" style="display: none;">
-    </div>
 
-</body>
-    <script type="text/javascript">
-        // window.onload=function(){
-        //     var img_url=["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGRyZXNzZXN8ZW58MHx8MHx8&w=1000&q=80","https://images.unsplash.com/photo-1623609163859-ca93c959b98a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGRyZXNzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"]
-        //     var product_block=document.getElementById("product_list")
-        //     console.log("hi")
-        //     for(var i=0; i<10; i++){
-        //         product_block.innerHTML+=`
-        //         <div class="card">
-        //             <img id="product_image" src=`+ img_url[i%img_url.length]+`/><br/>
-        //             <p id="price" >$120</p>
-        //             <p id="desc">Desc of this prod</p>
-        //         </div> `
-        //     }
-        // }
-        window.onload=function(){
+        <div  id="loader"><img class="loader" src="https://www.zilliondesigns.com/blog/wp-content/uploads/loading-the-truck.gif"/></div>
+
+        <!-- Div container having all the product cards to be displayed -->
+        <div class="products_container" id="product_list">
+           
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+
+
+        <!-- Page shifting buttons for next page and previous page -->
+        <div class="pagination-div" style="display:none" id="pagination-div">
+            <br/>
+            <br/>
+            <br/>
+            <button id="page-left" class="pagination-button" disabled onclick="pageButtonHandler('left')"> &lt; </button>
+            <p id="page-num" class="pagination-button">1</p>
+            <button id="page-right" class="pagination-button" onclick="pageButtonHandler('right')"> &gt; </button>
+            <p id="total-products" class="pagination-button"></p>
+        </div>
+
+    </body>
+
+
+    <!-- Jquery Script for sort functionality -->
+    <!-- <script>
+        
+
+        $('#sort-button').change(function () {
+            var divs = $(".card");
+            var sort_option=$("#sort-button").val();
+            if (sort_option == "priceAsc")
+            {
+                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                    return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?-1:0));
+                });
+            }
+            else if(sort_option=="priceDesc"){
+                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                    return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?-1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?1:0));
+                });
+            }
+            else{
+                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
+                return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?-1:0));
+            });
+            }
             
-            //var img_url=["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZHJlc3N8ZW58MHx8MHx8&w=1000&q=80", "https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGRyZXNzZXN8ZW58MHx8MHx8&w=1000&q=80","https://images.unsplash.com/photo-1568251188392-ae32f898cb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZWxlZ2FudCUyMGRyZXNzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"]
-            var product_block=document.getElementById("product_list")
-            console.log("hi")
-            fetch('https://33bd8667-5c26-4e78-9318-11e0e0eb3a22.mock.pstmn.io/get-products', {
-                method: 'GET',
-                mode : 'cors',
-                        headers: {
-                    'Access-Control-Allow-Origin':'*',
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-            }).then(response => response.json()).then((data)=>{
-                for (const prod of data){
-                    var tempid=String(prod.uniqueId);
-                    product_block.innerHTML+=`
-                    <div class="card" onclick="productClickHandler('${tempid}', '${prod.productImage}', '${prod.price}', '${prod.title}', '${prod.productDescription}')">
-                        <img id="product_image" src=`+ prod.productImage+`/><br/>
-                        <p id="price" >₹ ${prod.price}</p>
-                        <p id="desc">${prod.title}</p>
-                    </div> `
-                
-                }
-            })
-            
-        }
-
-        function productClickHandler(id, prod_img, price, title, desc){
-            document.getElementById("product_list").style.display="none";
-            var prod_div = document.getElementById("unique_product_container");
-            prod_div.style.display="block";
-            // prod_div.appendChild(document.createTextNode("Hi prod page : "+id));
-            prod_div.innerHTML+=`
-                <div class="unique_product_card">
-                    <img class="unique_product_image" src="${prod_img}" />
-                    <h1 class="unique_product_title"> ${title}</h1><h2 class="unique_product_price"><strong>₹ ${price}</strong></h2><br/>
-                    <h3 class="unique_product_description">${desc}</h3>
-                    
-                </div>
-            `;
-
-        }
-    </script>
+            console.log(divs)
+            $(".products_container").html(alphabeticallyOrderedDivs);
+        });
+    </script> -->
+   
 </html>
