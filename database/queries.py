@@ -3,7 +3,7 @@ CREATE_PRODUCT_TABLE = (
 )
 
 CREATE_CATEGORY_TABLE = (
-  "CREATE TABLE IF NOT EXISTS category_table(category_id SERIAL PRIMARY KEY, category_name VARCHAR(10000), parent_name VARCHAR(10000), UNIQUE(category_id));"
+  "CREATE TABLE IF NOT EXISTS category_table(category_id SERIAL PRIMARY KEY NOT NULL, category_name VARCHAR(10000), parent_name VARCHAR(10000), UNIQUE(category_id));"
 )
 # , FOREIGN KEY(category_id) REFERENCES product_table(category_id) ON DELETE CASCADE
 

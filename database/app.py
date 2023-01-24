@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, request, redirect
-# from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import psycopg2
 import json 
@@ -30,8 +29,6 @@ app = Flask(__name__)
 @app.route('/product-details', methods=['POST'])
 def populate_db():
     data = request.get_json(force=True, cache=True)
-    #   print("DATA", data)
-    # print(data)
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -40,25 +37,44 @@ def populate_db():
     cur.execute(CREATE_CATEGORY_TABLE)
     product_no = 0
 
-    # For each JSOn object, retrieve values for all keys
-    for i in data: 
-        # print("IIIIIII", i)
-        uniqueId=i['uniqueId']
-        # print("UNIQUE ID", uniqueId)
-        title=i['title']
-        price=i['price']
-        try:
-            description=i['productDescription']
-        except:
-            description=" "
-        img_url=i['productImage']
+    # For each JSON object, retrieve values for all keys
+    for product in data: 
 
-        #Assign category ID
-        catlevel1Name = i['catlevel1Name']
+        # Vlidate whether each key is present in the JSON request
         try:
-            catlevel2Name = i['catlevel2Name']
+            uniqueId = product['uniqueId']
         except:
-            catlevel2Name = " "
+            pass
+
+        try:
+            title = product['title']
+        except:
+            title = ""
+
+        try:
+            price = product['price']
+        except:
+            price = ""
+
+        try:
+            description = product['productDescription']
+        except:
+            description = ""
+
+        try:
+            img_url = product['productImage']
+        except:
+            img_url = ""
+
+        try:
+            catlevel1Name = product['catlevel1Name']
+        except:
+            catlevel1Name = ""
+
+        try:
+            catlevel2Name = product['catlevel2Name']
+        except:
+            catlevel2Name = ""
 
         #Remove spaces in the category names
         catlevel1Name = catlevel1Name.replace(" ", "")
@@ -78,16 +94,17 @@ def populate_db():
 
         # Insert details of current product into product table
         cur.execute(INSERT_PRODUCT, (uniqueId, title, description, price, img_url, category_id))
-        print("Product {} inserted", product_no+1)
+        product_no += 1 
+        print("Product " + product_no + " inserted")
 
     # cur.execute(SELECT_ALL_PRODUCTS)
     # prods = cur.fetchall()
-    # for i in prods:
-    #     print (i)
+    # for product in prods:
+    #     print (product)
     conn.commit()
     cur.close()
     conn.close()
-    return "completed"
+    return "Product(s) inserted into database"
 
 
 """ 
@@ -103,30 +120,23 @@ def get_product_details():
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # Validate presence of UniqueID in database
+    product_exists_query = "SELECT EXISTS({})".format(GET_PRODUCT)
+    cur.execute(product_exists_query, (uniqueId,))
+    if (cur.fetchone()[0]) == False:
+        return "Requested product not present in catalog"
+
     # Find corresponding product details from product table
     cur.execute(GET_PRODUCT, (str(uniqueId),))
     query_response = cur.fetchall()
 
-    product_details = {}
-    
-    try:
-        title = query_response[0][1]
-        # print(title)
-        description = query_response[0][2]
-        # print(description)
-        price = str(query_response[0][3])
-        imageurl = query_response[0][4]
-    except:
-        title = " "
-        description = " "
-        price = " "
-        imageurl = " "
-    
     # Create JSON object as response
-    product_details['title'] = title
-    product_details['description'] = description
-    product_details['price'] = price
-    product_details['imageurl'] = imageurl
+    product_details = {}
+    product_details['title'] = query_response[0][1]
+    product_details['description'] = query_response[0][2]
+    product_details['price'] = str(query_response[0][3])
+    product_details['imageurl'] = query_response[0][4]
+    
     print("Product request processed")  
     return json.dumps(product_details)
 
@@ -141,9 +151,16 @@ def get_product_details():
 @app.route('/category', methods=['GET'])
 def get_category_products():
 
-    # Parse arguments from request 
-    catlevel1Name = request.args.get('catlevel1Name')
-    catlevel2Name = request.args.get('catlevel2Name')
+    # Parse arguments from request
+    # Validate that category level 1 name is present in request 
+    try:
+        catlevel1Name = request.args.get('catlevel1Name')
+    except:
+        return "Invalid category. Request does not contain top level category"
+    try:
+        catlevel2Name = request.args.get('catlevel2Name')
+    except:
+        catlevel2Name = ""
 
     #Remove spaces in the category names
     catlevel1Name = catlevel1Name.replace(" ", "")
@@ -160,18 +177,19 @@ def get_category_products():
 
     # Check if the given hierarchy exists in database
     if type(category_id) == "NoneType":
-        print("Invalid category")
+        return "Invalid category"
     
     # Retrieve all rows having respective category ID from product table
     cur.execute(GET_CATEGORY_PRODUCTS, (category_id,))
     for product in cur.fetchall():
         # print(product)
         product_details = {}
+        product_details['uniqueId'] = product[0]
         product_details['title'] = product[1]
         # product_details['description'] = product[2]
         product_details['price'] = product[3]
         product_details['imageurl'] = product[4]
-        print(product_details)
+        # print(product_details)
         category_products.append(product_details)
 
     # print(category_products)
