@@ -16,7 +16,7 @@ SELECT_ALL_PRODUCTS = (
 )
 
 GET_PRODUCT = (
-    "SELECT * FROM product_table WHERE uniqueID = (%s);"
+    "SELECT * FROM product_table WHERE uniqueID = (%s)"
 )
 
 CATEGORY_ID_EXISTS = (
@@ -33,4 +33,8 @@ INSERT_CATEGORY_ID = (
 
 GET_CATEGORY_PRODUCTS = (
   "SELECT uniqueId, title, description, price, image_url from product_table WHERE category_id = (%s);"
+)
+
+GET_SUBCATEGORY_NAMES = (
+  "SELECT category_name from category_table where parent_name = (%s);"
 )
