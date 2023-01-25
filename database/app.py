@@ -162,6 +162,14 @@ def get_category_products():
         catlevel2Name = request.args.get('cat2')
     except:
         catlevel2Name = ""
+    try:
+        sort = request.args.get('sort')
+    except:
+        sort = ""
+    try:
+        page = int(request.args.get('page'))
+    except:
+        page = ""
 
     #Remove spaces in the category names
     print(catlevel2Name)
@@ -197,7 +205,21 @@ def get_category_products():
         # product_details = json.dumps(product_details)
         category_products.append(product_details)
     # print(category_products)
-    return [len(category_products), category_products]
+    # num_products = 100
+    num_products = len(category_products)
+    print(num_products)
+
+    if "asc" in sort:
+        category_products = sorted(category_products, key=lambda i: float(i['price']))
+    elif "desc" in sort:
+        category_products = sorted(category_products, key=lambda i: float(i['price']), reverse=True)
+
+    if num_products >= (page*10):
+        return [10, category_products[page*10-10: page*10]]
+    elif (page-1)*10 > num_products:
+        return [0, []]
+    else:
+        return [num_products%10, category_products[page*10-10:]]
 
 
 @app.route('/delete/<string:id>')
