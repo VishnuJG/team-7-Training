@@ -1,3 +1,6 @@
+
+
+// Handles loading page. Loads random data in case of no category or search operation performed. Else calls the respective functions in case of category or search operations.
 window.onload=function(){
     document.getElementById("loader").style.display='block';
     var queryString = window.location.search;
@@ -8,9 +11,11 @@ window.onload=function(){
     var prod_query = urlParams.get('q');
     var page_number = (urlParams.has('page'))? Number(urlParams.get('page')) : 1;  //required by onLoadSearchQueryHandler()
     if (cat1_value!=null){
+        // call for category function since category params are present
         onLoadCategoryHandler(params_dict, page_number);
     }
     else if(prod_query!=null){
+        // call for search function since search query param is present
         onLoadSearchQueryHandler(params_dict, page_number);
     }
     else{
@@ -25,6 +30,7 @@ window.onload=function(){
                         'Content-Type': 'application/json'
                     }
         }).then(response => response.json()).then((data)=>{
+            // data is of the form [number_of_products , list_of_products]
             for (const prod of data[1]){
                 var tempid=String(prod.uniqueId);
                 product_block.innerHTML+=`
@@ -37,17 +43,23 @@ window.onload=function(){
             document.getElementById("loader").style.display='none';
             paginationHandler(data[0], page_number);
         }).catch(err=>{
-            // window.location="Page500.html"
-            console.log(err);
+            window.location="Page500.html"
+            // console.log(err);
         });
+        
     }
+    
 }
-// Handler for loading the page and fetching data from backend API in case of search operation
+
+// Handler for loading the page and fetching data from backend API in case of search operation 
 function onLoadSearchQueryHandler(params_dict, page_number){
     var product_block=document.getElementById("product_list");
     var final_search_query = `http://127.0.0.1:5000/product-query?`;
+
+
+    // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
-        final_search_query+=`${param[0]}=${param[1]}&`;
+        final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
     fetch(final_search_query, {
         method: 'GET',
@@ -57,6 +69,8 @@ function onLoadSearchQueryHandler(params_dict, page_number){
         'Accept': 'application/json',
         'Content-Type': 'application/json'
         }}).then(response => response.json()).then((data)=>{
+
+            // data is of the form [number_of_products , list_of_products]
             for (const prod of data[1]){
                 var tempid=String(prod.uniqueId);
                 product_block.innerHTML+=`
@@ -70,14 +84,20 @@ function onLoadSearchQueryHandler(params_dict, page_number){
             document.getElementById("loader").style.display='none';
             paginationHandler(data[0], page_number)
         }).catch(err=>{
-            // window.location="Page500.html"
-            console.log(err)
-        })
+
+            window.location="Page500.html"
+            // console.log(err)
+            
+        });
+        return;
 }
 // Handler for loading the page and fetching data from backend API in case of search operation
 function onLoadCategoryHandler(params_dict, page_number){
     var product_block=document.getElementById("product_list");
     var final_search_query = `http://127.0.0.1:5000/category?`;
+
+    
+    // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
         final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
@@ -89,7 +109,8 @@ function onLoadCategoryHandler(params_dict, page_number){
         'Accept': 'application/json',
         'Content-Type': 'application/json'
         }}).then(response => response.json()).then((data)=>{
-            console.log(data)
+
+            // data is of the form [number_of_products , list_of_products]
             for (const prod of data[1]){
                 var tempid=String(prod.uniqueId);
                 // console.log(prod.imageurl)
@@ -103,21 +124,29 @@ function onLoadCategoryHandler(params_dict, page_number){
             document.getElementById("loader").style.display='none';
             paginationHandler(data[0], page_number); //(number_of_products, page_number)
         }).catch(err=>{
-            // window.location="Page500.html"
-            console.log(err);
+
+            window.location="Page404.html"
+            // console.log(err);
         })
 }
 // Handles enabling and disabling button based on number of products left. Also renders stats like the total number of products and the number of products being displayed
 function paginationHandler(number_of_products, page_number){
+    // if(isNaN(page_number)){
+    //     window.location="Page404.html";
+    // }
     document.getElementById("pagination-div").style.display='block';
     var whole_pages = Math.floor(number_of_products/10);
     var reminder_page = number_of_products%10;
+
+    // Lower end page number check
     if(page_number=='1'){
         document.getElementById("page-left").disabled = true;
     }
     else{
         document.getElementById("page-left").disabled = false;
     }
+
+    // Higer end page number check
     if(Number(page_number)==whole_pages && Number(reminder_page)==0){
         document.getElementById("page-right").disabled = true;
     }
@@ -127,11 +156,15 @@ function paginationHandler(number_of_products, page_number){
     else{
         document.getElementById("page-right").disabled = false;
     }
-    if ((Number(page_number) > whole_pages+1) || Number(page_number) < 1){
+
+
+    // Invalid page number recognition
+    if ((Number(page_number) > whole_pages+1) || Number(page_number) < 1 || isNaN(page_number)){
         window.open("Page404.html", '_self')
     }
     document.getElementById("page-num").innerHTML=page_number;
     document.getElementById("total-products").innerHTML=`Showing ${(page_number*10)-9} - ${((page_number*10)<=number_of_products)?(page_number*10): ((page_number*10)-10+(number_of_products%10))} of ${number_of_products} products`;
+    return;
 }
 // Redirects the page to the next page
 function pageButtonHandler(side){
@@ -141,6 +174,11 @@ function pageButtonHandler(side){
     var search_val = urlParams.get('q');
     var cur_page_num = (urlParams.has('page'))? Number(urlParams.get('page')) : 1;
     var final_search_query = `Base.html?`;
+
+    if(cur_page_num=='NaN'){
+        window.location="Page404.html";
+    }
+    
     for(const param of params_dict){
         if(param[0]=='page'){
             continue;

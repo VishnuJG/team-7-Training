@@ -21,6 +21,7 @@ def get_db_connection():
     return conn
 
 
+
 """
     Popoulate the databse with json objects. If tables do not exist, first create them according to a schema
     Args: List of JSON objects
@@ -95,6 +96,7 @@ def populate_db():
         # Insert details of current product into product table
         cur.execute(INSERT_PRODUCT, (uniqueId, title, description, price, img_url, category_id))
         product_no += 1
+
         print("Product " + str(product_no) + " inserted")
 
     # cur.execute(SELECT_ALL_PRODUCTS)
@@ -177,6 +179,7 @@ def get_category_products():
     # catlevel2Name = catlevel2Name.replace(" ", "")
     # catlevel2Name = catlevel2Name.replace("and", "&")
 
+
     category_products = []
     conn = get_db_connection()
     cur = conn.cursor()
@@ -220,6 +223,7 @@ def get_category_products():
         return [0, []]
     else:
         return [num_products%10, category_products[page*10-10:]]
+
 
 
 @app.route('/delete/<string:id>')
@@ -266,6 +270,7 @@ def productQuery():
     unbxd_val = requests.get(final_url).content
     unbxd_val = json.loads(unbxd_val)
     return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
+
 
 
 if __name__ == "__main__":
