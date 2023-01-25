@@ -1,5 +1,5 @@
 
-// Function to handle category calls to the backend
+// Function to handle category calls to the backend. Generates url with all the category params, encodes the same and redirects the page to the url.
 function categoryAPICall(cat1_value){
 
     if (cat1_value=='men'){
@@ -17,7 +17,7 @@ function categoryAPICall(cat1_value){
 }
 
 
-// Function to handle search query
+// Function to handle search query. Generates the search url with all the query parameter and redirects the page with the params. This function also does url encoding.
 function searchFunction(){
     
     var search_val = document.getElementById("search_val").value;
@@ -29,6 +29,7 @@ function searchFunction(){
 }
 
 
+//Onload this function handles fetching category list data for both men and women from the backend and renders the same
 window.onload=function(){
     var men_dropdown=document.getElementById("cats1");
     var women_dropdown=document.getElementById("cats2");
