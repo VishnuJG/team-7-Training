@@ -3,6 +3,8 @@ from datetime import datetime
 import psycopg2
 import json 
 from queries import *
+from flask_cors import CORS
+import requests
 
 
 """
@@ -17,6 +19,7 @@ def get_db_connection():
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 """
@@ -73,12 +76,14 @@ def populate_db():
 
         try:
             catlevel2Name = product['catlevel2Name']
+            # catlevel2Name = catlevel2Name.replace("&", "and")
         except:
             catlevel2Name = ""
 
         #Remove spaces in the category names
-        catlevel1Name = catlevel1Name.replace(" ", "")
-        catlevel2Name = catlevel2Name.replace(" ", "")
+        # catlevel1Name = catlevel1Name.replace(" ", "")
+        # catlevel2Name = catlevel2Name.replace(" ", "")
+        catlevel2Name=catlevel2Name.strip()
 
         # Check if category ID for a hierarchy of cetegories already exists in category table
         cur.execute(CATEGORY_ID_EXISTS, (catlevel2Name, catlevel1Name,))
@@ -95,7 +100,7 @@ def populate_db():
         # Insert details of current product into product table
         cur.execute(INSERT_PRODUCT, (uniqueId, title, description, price, img_url, category_id))
         product_no += 1 
-        print("Product " + product_no + " inserted")
+        print("Product " + str(product_no) + " inserted")
 
     # cur.execute(SELECT_ALL_PRODUCTS)
     # prods = cur.fetchall()
@@ -121,13 +126,13 @@ def get_product_details():
     cur = conn.cursor()
 
     # Validate presence of UniqueID in database
-    product_exists_query = "SELECT EXISTS({})".format(GET_PRODUCT)
+    product_exists_query = "SELECT EXISTS({});".format(GET_PRODUCT)
     cur.execute(product_exists_query, (uniqueId,))
     if (cur.fetchone()[0]) == False:
         return "Requested product not present in catalog"
 
     # Find corresponding product details from product table
-    cur.execute(GET_PRODUCT, (str(uniqueId),))
+    cur.execute(GET_PRODUCT+";", (str(uniqueId),))
     query_response = cur.fetchall()
 
     # Create JSON object as response
@@ -154,17 +159,20 @@ def get_category_products():
     # Parse arguments from request
     # Validate that category level 1 name is present in request 
     try:
-        catlevel1Name = request.args.get('catlevel1Name')
+        catlevel1Name = request.args.get('cat1')
     except:
         return "Invalid category. Request does not contain top level category"
     try:
-        catlevel2Name = request.args.get('catlevel2Name')
+        catlevel2Name = request.args.get('cat2')
     except:
         catlevel2Name = ""
 
     #Remove spaces in the category names
-    catlevel1Name = catlevel1Name.replace(" ", "")
-    catlevel2Name = catlevel2Name.replace(" ", "")
+    print(catlevel2Name)
+    # catlevel1Name = catlevel1Name.replace(" ", "")
+    # catlevel2Name = catlevel2Name.replace(" ", "")
+    # catlevel2Name = catlevel2Name.replace("and", "&")
+
 
     category_products = []
     conn = get_db_connection()
@@ -172,7 +180,7 @@ def get_category_products():
 
     # Lookup category ID of corresponding hierarchy from category table
     cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name))
-    # print(catlevel2Name, catlevel1Name)
+    print(catlevel2Name, catlevel1Name)
     category_id = cur.fetchone()[0]
 
     # Check if the given hierarchy exists in database
@@ -188,12 +196,13 @@ def get_category_products():
         product_details['title'] = product[1]
         # product_details['description'] = product[2]
         product_details['price'] = product[3]
-        product_details['imageurl'] = product[4]
+        product_details['productImage'] = product[4]
         # print(product_details)
+        # product_details = json.dumps(product_details)
         category_products.append(product_details)
 
     # print(category_products)
-    return json.dumps(product_details)
+    return [len(category_products), category_products]
 
 
 @app.route('/delete/<string:id>')
@@ -204,6 +213,21 @@ def delete(id):
 @app.route('/update/<string:id>', methods=['GET', 'POST'])
 def update(id):
     pass
+
+
+@app.route('/product-query')
+def productQuery():
+    final_url="https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?"
+
+    for param in request.args:
+        final_url+="{}={}&".format(param, request.args[param])   
+    
+    # unbxd_val = requests.get('https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q={}&page={}&sort={}'.format(query_val, page_val, sort_operation)).content
+    unbxd_val = requests.get(final_url).content
+    unbxd_val = json.loads(unbxd_val)
+
+    return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
+
 
 
 if __name__ == "__main__":
