@@ -27,6 +27,8 @@ GET_CATEGORY_ID = (
   "SELECT category_id from category_table WHERE category_name = %s AND parent_name = %s;"
 )
 
+# GET_CATEGORY_ID_FROM_PRODUCT =
+
 INSERT_CATEGORY_ID = (
   "INSERT INTO category_table(category_name, parent_name) VALUES (%s, %s);"
 )
@@ -38,3 +40,15 @@ GET_CATEGORY_PRODUCTS = (
 GET_SUBCATEGORY_NAMES = (
   "SELECT category_name from category_table where parent_name = (%s);"
 )
+
+# DELETE_PRODUCT = (
+#   "DELETE FROM product_table WHERE uniqueID = (%s);"
+# )
+
+# OTHER_CATEGORY_PRODUCT_EXISTS = (
+#   "SELECT EXISTS (SELECT DISTINCT category_id FROM  product_table WHERE category_id = (%s));"
+# )
+
+# DELETE_CATEGORY = (
+#   "DELETE FROM category_table WHERE category_id = (%s);"
+# )

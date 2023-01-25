@@ -173,13 +173,6 @@ def get_category_products():
     except:
         page = ""
 
-    #Remove spaces in the category names
-    print(catlevel2Name)
-    # catlevel1Name = catlevel1Name.replace(" ", "")
-    # catlevel2Name = catlevel2Name.replace(" ", "")
-    # catlevel2Name = catlevel2Name.replace("and", "&")
-
-
     category_products = []
     conn = get_db_connection()
     cur = conn.cursor()
@@ -190,7 +183,7 @@ def get_category_products():
     category_id = cur.fetchone()[0]
 
     # Check if the given hierarchy exists in database
-    if type(category_id) == "NoneType":
+    if len(str(category_id)) < 1:
         return "Invalid category"
 
     # Retrieve all rows having respective category ID from product table
@@ -212,27 +205,54 @@ def get_category_products():
     num_products = len(category_products)
     print(num_products)
 
-    if "asc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']))
-    elif "desc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']), reverse=True)
+    # sort product list if sort parameter is present 
+    if(sort is not None and len(sort) > 0):
+        # sort based on price in ascending order
+        if "asc" in sort:
+            category_products = sorted(category_products, key=lambda product: float(product['price']))
+        # sort based on price in descending order
+        elif "desc" in sort:
+            category_products = sorted(category_products, key=lambda product: float(product['price']), reverse=True)
 
+    # display 10 product at a time on a page
     if num_products >= (page*10):
-        return [10, category_products[page*10-10: page*10]]
+        return [num_products, category_products[page*10-10: page*10]]
+    # if a non-existent page number is requested 
     elif (page-1)*10 > num_products:
         return [0, []]
+    # last page of products which does displays less than 10 products
     else:
-        return [num_products%10, category_products[page*10-10:]]
+        return [num_products, category_products[page*10-10:]]
 
 
 
-@app.route('/delete/<string:id>')
-def delete(id):
-    pass
+@app.route('/product-details', methods=['DELETE'])
+def delete_product():
 
+    # Parse arguments from request
+    uniqueId = str(request.args.get("uniqueId"))
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-@app.route('/update/<string:id>', methods=['GET', 'POST'])
-def update(id):
+    # Validate presence of UniqueID in database
+    product_exists_query = "SELECT EXISTS({});".format(GET_PRODUCT)
+    cur.execute(product_exists_query, (uniqueId,))
+    if (cur.fetchone()[0]) == False:
+        return "Product already deleted from catalog"
+
+    cur.execute(GET_CATEGORY_ID, (uniqueId,))
+    category_id = cur.fetchone()[0]
+    cur.execute(DELETE_PRODUCT, (uniqueId,))
+    cur.execute(OTHER_CATEGORY_PRODUCT_EXISTS, (category_id,))
+    category_exists = cur.fetchone()[0]
+    if  category_exists == False:
+        cur.execute(DELETE_CATEGORY, (category_id,))
+
+    return "Product deleted from table"
+
+    
+@app.route('/update/<string:id>', methods=['PUT'])
+def update_product():
     pass
 
 
@@ -241,17 +261,16 @@ def render_subcategory_names():
 
     conn = get_db_connection()
     cur = conn.cursor()
-    subcategories = {}
     men_categories = []
     women_categories = []
+
+    # get the subcategories under men
     cur.execute(GET_SUBCATEGORY_NAMES, ("men",))
     for subcategory in cur.fetchall():
         if subcategory[0] != "":
             men_categories.append(subcategory[0])
-    # subcategories['men'] = cur.fetchone()[0]
-    # print(subcategories['men'])
-    # print(men_categories)
-    # print(subcategories['men'][0])
+    
+    # get the subcategories under women
     cur.execute(GET_SUBCATEGORY_NAMES, ("women",))
     for subcategory in cur.fetchall():
         if subcategory[0] != "":
@@ -275,9 +294,3 @@ def productQuery():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-

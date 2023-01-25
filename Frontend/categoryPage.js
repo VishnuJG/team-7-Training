@@ -21,7 +21,7 @@ window.onload=function(){
     else{
         // if neither search or category then just get random products
         var product_block=document.getElementById("product_list");
-        fetch('http://127.0.0.1:5000/product-query?q=*&page=1', {
+        fetch('http://127.0.0.1:5000/product-search?q=*&page=1', {
             method: 'GET',
             mode : 'cors',
                     headers: {
@@ -54,7 +54,7 @@ window.onload=function(){
 // Handler for loading the page and fetching data from backend API in case of search operation 
 function onLoadSearchQueryHandler(params_dict, page_number){
     var product_block=document.getElementById("product_list");
-    var final_search_query = `http://127.0.0.1:5000/product-query?`;
+    var final_search_query = `http://127.0.0.1:5000/product-search?`;
 
 
     // Append each param to the base url to generate the final url with all the necessary params
@@ -115,7 +115,7 @@ function onLoadCategoryHandler(params_dict, page_number){
                 var tempid=String(prod.uniqueId);
                 // console.log(prod.imageurl)
                 product_block.innerHTML+=`
-                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                <div class="card" onclick="window.open('Product.html?catuid=${tempid}','_blank');">
                     <img id="product_image" src=`+ prod.productImage+`/><br/>
                     <p>$ <span id="price">${prod.price}</span></p>
                     <p id="desc">${prod.title}</p>
@@ -184,7 +184,7 @@ function pageButtonHandler(side){
             continue;
         }
         else{
-            final_search_query+=`${param[0]}=${param[1]}&`;
+            final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
         }
     }
     if(side == 'left'){
@@ -205,10 +205,10 @@ function sortHandler(){
             continue;
         }
         else if(param[0]=='page'){
-            final_search_query+=`${param[0]}=1&`;
+            final_search_query+=`${encodeURIComponent(param[0])}=1&`;
         }
         else{
-            final_search_query+=`${param[0]}=${param[1]}&`;
+            final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
         }
     }
     console.log(final_search_query);
