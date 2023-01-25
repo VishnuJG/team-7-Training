@@ -16,7 +16,7 @@ SELECT_ALL_PRODUCTS = (
 )
 
 GET_PRODUCT = (
-    "SELECT * FROM product_table WHERE uniqueID = (%s);"
+    "SELECT * FROM product_table WHERE uniqueID = (%s)"
 )
 
 CATEGORY_ID_EXISTS = (
