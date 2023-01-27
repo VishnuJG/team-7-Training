@@ -23,13 +23,6 @@ function searchFunction(){
     if(search_val==""){
         search_val="*";
     }
-
-
-
-
-
-
-
     window.parent.location=`Base.html?q=${encodeURIComponent(search_val)}&page=1`;
     
 }

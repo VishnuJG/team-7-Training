@@ -61,6 +61,7 @@ function onLoadSearchQueryHandler(params_dict, page_number){
     for(const param of params_dict){
         final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
+    console.log(final_search_query)
     fetch(final_search_query, {
         method: 'GET',
         mode : 'cors',
