@@ -23,13 +23,6 @@ function searchFunction(){
     if(search_val==""){
         search_val="*";
     }
-
-
-
-
-
-
-
     window.parent.location=`Base.html?q=${encodeURIComponent(search_val)}&page=1`;
     
 }
@@ -39,7 +32,7 @@ function searchFunction(){
 window.onload=function(){
     var men_dropdown=document.getElementById("cats1");
     var women_dropdown=document.getElementById("cats2");
-    fetch('https://b7c15b81-24ee-4a31-8be1-5d2b2304e9fb.mock.pstmn.io/subcategory-names', {
+    fetch('http://127.0.0.1:5000/subcategory-names', {
             method: 'GET',
             mode : 'cors',
                     headers: {
@@ -52,13 +45,13 @@ window.onload=function(){
             for (const prod of data['men']){
 
                 men_dropdown.innerHTML+=`
-                <option value=${prod}>${prod}</option>`
+                <option value='${prod}'>${prod}</option>`
             
             }
             for (const prod of data['women']){
 
                 women_dropdown.innerHTML+=`
-                <option value=${prod}>${prod}</option>`
+                <option value='${prod}'>${prod}</option>`
             
             }
         }).catch(err=>{

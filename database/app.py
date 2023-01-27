@@ -187,10 +187,11 @@ def get_category_products():
     # Lookup category ID of corresponding hierarchy from category table
     cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name))
     print(catlevel2Name, catlevel1Name)
+
     category_id = cur.fetchone()[0]
 
     # Check if the given hierarchy exists in database
-    if type(category_id) == "NoneType":
+    if len(str(category_id)) < 1:
         return "Invalid category"
 
     # Retrieve all rows having respective category ID from product table
@@ -212,17 +213,19 @@ def get_category_products():
     num_products = len(category_products)
     print(num_products)
 
-    if "asc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']))
-    elif "desc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']), reverse=True)
+    if(sort is not None and len(sort) > 0):
+
+        if "asc" in sort:
+            category_products = sorted(category_products, key=lambda i: float(i['price']))
+        elif "desc" in sort:
+            category_products = sorted(category_products, key=lambda i: float(i['price']), reverse=True)
 
     if num_products >= (page*10):
-        return [10, category_products[page*10-10: page*10]]
+        return [num_products, category_products[page*10-10: page*10]]
     elif (page-1)*10 > num_products:
         return [0, []]
     else:
-        return [num_products%10, category_products[page*10-10:]]
+        return [num_products, category_products[page*10-10:]]
 
 
 
