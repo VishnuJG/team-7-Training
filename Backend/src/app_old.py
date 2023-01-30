@@ -20,7 +20,7 @@ cache = Cache(app)
 # """
 
 def get_db_connection():
-    conn = psycopg2.connect(host='localhost',database='unbxddatabase',user='unbxd',password='unbxd')
+    conn = psycopg2.connect(database='unbxddatabase',user='unbxd',password='unbxd', host="backend-database-1")
     return conn
 
 
@@ -88,9 +88,10 @@ def populate_db():
         # Check if category ID for a hierarchy of cetegories already exists in category table
         cur.execute(CATEGORY_ID_EXISTS, (catlevel2Name, catlevel1Name,))
         category_flag = cur.fetchone()[0]
-
+        
         # Create a new category ID in category table if not already exists
-        if category_flag == False:
+        if not category_flag:
+            print(category_flag)
             cur.execute(INSERT_CATEGORY_ID, (catlevel2Name, catlevel1Name,))
 
         # Look up category ID for current hierarchy
@@ -101,7 +102,7 @@ def populate_db():
         cur.execute(INSERT_PRODUCT, (uniqueId, title, description, price, img_url, category_id))
         product_no += 1
 
-        print("Product " + str(product_no) + " inserted")
+        # print("Product " + str(product_no) + " inserted")
 
     # cur.execute(SELECT_ALL_PRODUCTS)
     # prods = cur.fetchall()
@@ -340,4 +341,4 @@ def hello():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5002)

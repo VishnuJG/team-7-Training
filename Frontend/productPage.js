@@ -7,7 +7,7 @@ window.onload=function(){
     const product_id_search = urlParams.get('uid')
     const product_id_cat = urlParams.get('catuid')
     if(product_id_search!=null){
-        fetch(`http://127.0.0.1:5000/product-search?q=uniqueId ${product_id_search}`, {
+        fetch(`http://127.0.0.1:5002/product-search?q=uniqueId ${product_id_search}`, {
             method: 'GET',
             mode : 'cors',
             headers: {
@@ -34,12 +34,12 @@ window.onload=function(){
             }
             document.getElementById("loader").style.display='none';
         }).catch(err=>{
-            window.location="Page500.html"
-            // console.log(err);
+            // window.location="Page500.html"
+            console.log(err);
         })
     }
     else{
-        fetch(`http://127.0.0.1:5000/product-details?uniqueId=${product_id_cat}`, {
+        fetch(`http://127.0.0.1:5002/product-details?uniqueId=${product_id_cat}`, {
             method: 'GET',
             mode : 'cors',
             headers: {

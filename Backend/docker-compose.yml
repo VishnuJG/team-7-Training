@@ -3,25 +3,27 @@ services:
   api:
     container_name: flask-container
     build: .
-    entrypoint: python3 src/app.py
+    entrypoint: python3 app.py
     env_file:
       - .env
     ports:
+      - '5002:5002'
       - '5002:5002'
   redis:
     image: redis
     container_name: redis-container
     ports:
       - "6379:6379"
+
   database:
     image : postgres
     ports:
-      - "5431:5431"
+      - "5432:5432"
     restart : always
     environment:
       POSTGRES_USER : unbxd
       POSTGRES_PASSWORD : unbxd
-      POSTGRES_DB : unbxddatabase
+      POSTGRES_DB : unbxddatabase  
   adminer:
     image : adminer
     restart: always
@@ -29,3 +31,5 @@ services:
       - database
     ports:
       - "8080:8080"
+       
+    

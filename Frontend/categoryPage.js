@@ -85,8 +85,8 @@ function onLoadSearchQueryHandler(params_dict, page_number){
             paginationHandler(data[0], page_number)
         }).catch(err=>{
 
-            window.location="Page500.html"
-            // console.log(err)
+            // window.location="Page500.html"
+            console.log(err)
             
         });
         return;

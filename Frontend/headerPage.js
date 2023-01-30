@@ -39,7 +39,7 @@ function searchFunction(){
 window.onload=function(){
     var men_dropdown=document.getElementById("cats1");
     var women_dropdown=document.getElementById("cats2");
-    fetch('http://127.0.0.1:5000/subcategory-names', {
+    fetch('http://127.0.0.1:5002/subcategory-names', {
             method: 'GET',
             mode : 'cors',
                     headers: {
