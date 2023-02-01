@@ -64,20 +64,21 @@ class Product():
         query_response = db.read_from_db(GET_PRODUCT+";", (str(self.uniqueId),))
 
         # Create JSON object as response
-        # print("TITLE", query_response)
-        self.title = query_response[0][1]
-        self.description = query_response[0][2]
-        self.price = str(query_response[0][3])
-        self.imageurl = query_response[0][4]
-        print("Product request processed")
+        print("TITLE", query_response)
+        print(self.uniqueId)
 
+        self.title = query_response[0][1]
+        self.productDescription = query_response[0][2]
+        self.price = str(query_response[0][3])
+        self.productImage= query_response[0][4]
+        print("Product request processed")
         return self.product_to_json()
         # convert to json in controller
 
 
     def get_searched_product_details(self):
         unbxdAPI_obj=UnbxdAPI()
-        final_url=unbxdAPI_obj.url+'uniqueId='+self.uniqueId
+        final_url=unbxdAPI_obj.url+'q=uniqueId '+self.uniqueId
         
         return unbxdAPI_obj.fetch_data_from_API(final_url)
         

@@ -9,8 +9,9 @@ class Search():
         self.url =  "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?"
 
     
-    def return_search_query(self, request):
+    def return_search_query(self, search_term, request):
 
+        self.url += "q="+search_term+"&"
         for param in request.args:
             # print(param)
             self.url += "{}={}&".format(param, request.args[param])

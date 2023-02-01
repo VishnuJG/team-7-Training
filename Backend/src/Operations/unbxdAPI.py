@@ -17,6 +17,7 @@ class UnbxdAPI:
     def fetch_data_from_API(self, final_url):
         unbxd_val = requests.get(final_url).content
         unbxd_val = json.loads(unbxd_val)
+        print(unbxd_val)
         return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
 
     

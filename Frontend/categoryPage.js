@@ -10,19 +10,21 @@ window.onload=function(){
     var cat2_value = urlParams.get('cat2');
     var prod_query = urlParams.get('q');
     var page_number = (urlParams.has('page'))? Number(urlParams.get('page')) : 1;  //required by onLoadSearchQueryHandler()
+
+
     if (cat1_value!=null){
         // call for category function since category params are present
-        onLoadCategoryHandler(params_dict, page_number);
+        onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value);
     }
     else if(prod_query!=null){
         // call for search function since search query param is present
-        onLoadSearchQueryHandler(params_dict, page_number);
+        onLoadSearchQueryHandler(params_dict, page_number, prod_query);
     }
     else{
         window.location=`Base.html?q=*&page=1`;
         // if neither search or category then just get random products
         var product_block=document.getElementById("product_list");
-        fetch('http://127.0.0.1:5002/product-search?q=*&page=1', {
+        fetch('http://127.0.0.1:5002/product-search/*?page=1', {
             method: 'GET',
             mode : 'cors',
                     headers: {
@@ -53,13 +55,15 @@ window.onload=function(){
 }
 
 // Handler for loading the page and fetching data from backend API in case of search operation 
-function onLoadSearchQueryHandler(params_dict, page_number){
+function onLoadSearchQueryHandler(params_dict, page_number, prod_query){
     var product_block=document.getElementById("product_list");
-    var final_search_query = `http://127.0.0.1:5002/product-search?`;
-
-
+    var final_search_query = `http://127.0.0.1:5002/product-search/`;
+    final_search_query+=prod_query + "?";
     // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
+        if(param[0]=='q'){
+            continue
+        }
         final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
     console.log(final_search_query)
@@ -94,13 +98,22 @@ function onLoadSearchQueryHandler(params_dict, page_number){
         return;
 }
 // Handler for loading the page and fetching data from backend API in case of search operation
-function onLoadCategoryHandler(params_dict, page_number){
+function onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value){
     var product_block=document.getElementById("product_list");
-    var final_search_query = `http://127.0.0.1:5002/category?`;
+    var final_search_query = `http://127.0.0.1:5002/category/`;
 
-    
+    if (cat2_value == undefined || cat2_value==""){
+        final_search_query+='category1-details/'+cat1_value+"?";
+    }
+    else{
+        final_search_query+='category2-details/'+cat1_value+"/"+cat2_value+"?";
+    }
+
     // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
+        if(param[0]=='cat1' || param[0]=='cat2'){
+            continue;
+        }
         final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
     fetch(final_search_query, {
@@ -115,7 +128,7 @@ function onLoadCategoryHandler(params_dict, page_number){
             // data is of the form [number_of_products , list_of_products]
             for (const prod of data[1]){
                 var tempid=String(prod.uniqueId);
-                // console.log(prod.imageurl)
+                console.log(prod.imageurl)
                 product_block.innerHTML+=`
                 <div class="card" onclick="window.open('Product.html?catuid=${tempid}','_blank');">
                     <img id="product_image" src=`+ prod.productImage+`/><br/>

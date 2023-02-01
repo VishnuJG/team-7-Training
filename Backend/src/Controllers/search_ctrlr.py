@@ -6,10 +6,10 @@ from Models.search_servicing import Search
 
 searchCtrlr = (Blueprint("product-search", __name__))
 
-@searchCtrlr.route("/", methods=['GET'])
-def UNBXDAPISearch():
+@searchCtrlr.route("/<string:search_term>", methods=['GET'])
+def UNBXDAPISearch(search_term):
     
     res = Search( )
     print(request.args)
-    return res.return_search_query(request)
+    return res.return_search_query(search_term, request)
     
