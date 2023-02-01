@@ -21,7 +21,7 @@ window.onload=function(){
     else{
         // if neither search or category then just get random products
         var product_block=document.getElementById("product_list");
-        fetch('http://127.0.0.1:5000/product-search?q=*&page=1', {
+        fetch('http://127.0.0.1:5002/product-search?q=*&page=1', {
             method: 'GET',
             mode : 'cors',
                     headers: {
@@ -54,7 +54,7 @@ window.onload=function(){
 // Handler for loading the page and fetching data from backend API in case of search operation 
 function onLoadSearchQueryHandler(params_dict, page_number){
     var product_block=document.getElementById("product_list");
-    var final_search_query = `http://127.0.0.1:5000/product-search?`;
+    var final_search_query = `http://127.0.0.1:5002/product-search?`;
 
 
     // Append each param to the base url to generate the final url with all the necessary params
@@ -94,7 +94,7 @@ function onLoadSearchQueryHandler(params_dict, page_number){
 // Handler for loading the page and fetching data from backend API in case of search operation
 function onLoadCategoryHandler(params_dict, page_number){
     var product_block=document.getElementById("product_list");
-    var final_search_query = `http://127.0.0.1:5000/category?`;
+    var final_search_query = `http://127.0.0.1:5002/category?`;
 
     
     // Append each param to the base url to generate the final url with all the necessary params

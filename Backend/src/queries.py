@@ -37,6 +37,10 @@ GET_CATEGORY_PRODUCTS = (
   "SELECT uniqueId, title, description, price, image_url from product_table WHERE category_id = (%s);"
 )
 
+GET_CATEGORY_L1 = (
+  "SELECT category_id FROM category_table WHERE parent_name = %s;"
+)
+
 GET_SUBCATEGORY_NAMES = (
   "SELECT category_name from category_table where parent_name = (%s);"
 )
