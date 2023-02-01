@@ -7,7 +7,7 @@ window.onload=function(){
     const product_id_search = urlParams.get('uid')
     const product_id_cat = urlParams.get('catuid')
     if(product_id_search!=null){
-        fetch(`http://127.0.0.1:5000/product-search?q=uniqueId ${product_id_search}`, {
+        fetch(`http://127.0.0.1:5002/product-search?q=uniqueId ${product_id_search}`, {
             method: 'GET',
             mode : 'cors',
             headers: {
@@ -34,12 +34,12 @@ window.onload=function(){
             }
             document.getElementById("loader").style.display='none';
         }).catch(err=>{
-            window.location="Page500.html"
-            // console.log(err);
+            // window.location="Page500.html"
+            console.log(err);
         })
     }
     else{
-        fetch(`http://127.0.0.1:5000/product-details?uniqueId=${product_id_cat}`, {
+        fetch(`http://127.0.0.1:5002/product-details?uniqueId=${product_id_cat}`, {
             method: 'GET',
             mode : 'cors',
             headers: {
@@ -55,8 +55,8 @@ window.onload=function(){
                 prod_div.innerHTML+=`
                 <div class="unique_card" >
                     <img id="product_image" src=`+ data.imageurl+`/><br/>
-                    <p id="price" >$ ${data.price}</p>
                     <p id="title">${ data.title.charAt(0).toUpperCase() + data.title.slice(1)}</p>
+                    <p id="price" >$ ${data.price}</p>
                     <p id="desc">${data.description!=null ? data.description : ""}</p>
                 </div> `;
             }

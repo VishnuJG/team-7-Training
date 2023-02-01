@@ -39,7 +39,7 @@ class Database:
         conn, cur = self.connect_to_db()
 
         try:
-            print(params_tuple)
+            # print(params_tuple)
             cur.execute(query, params_tuple)
             data = cur.fetchall()
         except Exception as e:
