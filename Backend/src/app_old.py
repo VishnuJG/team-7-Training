@@ -5,16 +5,19 @@ import json
 from queries import *
 from flask_cors import CORS
 import requests
+from flask_caching import Cache
 
 app = Flask(__name__)
 CORS(app)
+app.config.from_object('config.BaseConfig')  
+cache = Cache(app)
 
 
-"""
-    Connect to the database
-    Args: None
-    Returns: connection
-"""
+# """
+#     Connect to the database
+#     Args: None
+#     Returns: connection
+# """
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',database='unbxddatabase',user='unbxd',password='unbxd')
@@ -25,7 +28,7 @@ def get_db_connection():
 """
     Popoulate the databse with json objects. If tables do not exist, first create them according to a schema
     Args: List of JSON objects
-          keys: ['uniqueId', 'title', 'price', 'productDescription', 'productImage', 'catlevel1Name, 'catlevel2Name']
+          keys: ['uniqueId', 'title', 'price', 'productDescription', 'productImage', 'catlevel1Name', 'catlevel2Name']
     Returns: None
 """
 
@@ -33,6 +36,7 @@ def get_db_connection():
 def populate_db():
 
     data = request.get_json(force=True, cache=True)
+    print("REQUEST", data)
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -117,6 +121,7 @@ def populate_db():
 """
 
 @app.route('/product-details', methods=['GET'])
+# @cache.cached(timeout=30, query_string=True)
 def get_product_details():
 
     # Parse arguments from request
@@ -160,10 +165,10 @@ def get_category_products():
         catlevel1Name = request.args.get('cat1')
     except:
         return "Invalid category. Request does not contain top level category"
-    try:
-        catlevel2Name = request.args.get('cat2')
-    except:
-        catlevel2Name = ""
+    # try:
+    #     catlevel2Name = request.args.get('cat2')
+    # except:
+    #     catlevel2Name = ""
     try:
         sort = request.args.get('sort')
     except:
@@ -173,67 +178,124 @@ def get_category_products():
     except:
         page = ""
 
-    #Remove spaces in the category names
-    print(catlevel2Name)
-    # catlevel1Name = catlevel1Name.replace(" ", "")
-    # catlevel2Name = catlevel2Name.replace(" ", "")
-    # catlevel2Name = catlevel2Name.replace("and", "&")
-
+    if "cat2" in request.args:
+        catlevel2Name = request.args.get('cat2')
+        l1_category_flag  = 0
+    else:
+        catlevel2Name = ""
+        l1_category_flag  = 1
 
     category_products = []
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Lookup category ID of corresponding hierarchy from category table
-    cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name))
-    print(catlevel2Name, catlevel1Name)
-    category_id = cur.fetchone()[0]
+    if l1_category_flag == 0:
+        # Lookup category ID of corresponding hierarchy from category table
+        cur.execute(GET_CATEGORY_ID, (catlevel2Name, catlevel1Name))
+        print(catlevel2Name, catlevel1Name)
+        category_id = cur.fetchone()[0]
 
-    # Check if the given hierarchy exists in database
-    if type(category_id) == "NoneType":
-        return "Invalid category"
+        # Check if the given hierarchy exists in database
+        if len(str(category_id)) < 1:
+            return "Invalid category"
 
-    # Retrieve all rows having respective category ID from product table
-    cur.execute(GET_CATEGORY_PRODUCTS, (category_id,))
+        # Retrieve all rows having respective category ID from product table
+        cur.execute(GET_CATEGORY_PRODUCTS, (category_id,))
 
-    for product in cur.fetchall():
-        # print(product)
-        product_details = {}
-        product_details['uniqueId'] = product[0]
-        product_details['title'] = product[1]
-        # product_details['description'] = product[2]
-        product_details['price'] = product[3]
-        product_details['productImage'] = product[4]
-        # print(product_details)
-        # product_details = json.dumps(product_details)
-        category_products.append(product_details)
+        for product in cur.fetchall():
+            # print(product)
+            product_details = {}
+            product_details['uniqueId'] = product[0]
+            product_details['title'] = product[1]
+            # product_details['description'] = product[2]
+            product_details['price'] = product[3]
+            product_details['productImage'] = product[4]
+            # print(product_details)
+            # product_details = json.dumps(product_details)
+            category_products.append(product_details)
+
+    else:
+
+        cur.execute(GET_CATEGORY_L1, (catlevel1Name,))
+
+        # Check if the given hierarchy exists in database
+        # if len(str(category_id)) < 1:
+        #     return "Invalid category"
+
+
+        ids = cur.fetchall()
+        print(ids)
+
+        for category_id in ids:
+            print(category_id)
+            cur.execute(GET_CATEGORY_PRODUCTS, (category_id,))
+
+            for product in cur.fetchall():
+                # print(product)
+                product_details = {}
+                product_details['uniqueId'] = product[0]
+                product_details['title'] = product[1]
+                # product_details['description'] = product[2]
+                product_details['price'] = product[3]
+                product_details['productImage'] = product[4]
+                # print(product_details)
+                # product_details = json.dumps(product_details)
+                category_products.append(product_details)
+
     # print(category_products)
     # num_products = 100
     num_products = len(category_products)
     print(num_products)
 
-    if "asc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']))
-    elif "desc" in sort:
-        category_products = sorted(category_products, key=lambda i: float(i['price']), reverse=True)
+    # sort product list if sort parameter is present 
+    if(sort is not None and len(sort) > 0):
+        # sort based on price in ascending order
+        if "asc" in sort:
+            category_products = sorted(category_products, key=lambda product: float(product['price']))
+        # sort based on price in descending order
+        elif "desc" in sort:
+            category_products = sorted(category_products, key=lambda product: float(product['price']), reverse=True)
 
+    # display 10 product at a time on a page
     if num_products >= (page*10):
-        return [10, category_products[page*10-10: page*10]]
+        return [num_products, category_products[page*10-10: page*10]]
+    # if a non-existent page number is requested 
     elif (page-1)*10 > num_products:
         return [0, []]
+    # last page of products which does displays less than 10 products
     else:
-        return [num_products%10, category_products[page*10-10:]]
+        return [num_products, category_products[page*10-10:]]
 
 
 
-@app.route('/delete/<string:id>')
-def delete(id):
-    pass
+# @app.route('/product-details', methods=['DELETE'])
+# def delete_product():
 
+#     # Parse arguments from request
+#     uniqueId = str(request.args.get("uniqueId"))
+#     conn = get_db_connection()
+#     cur = conn.cursor()
 
-@app.route('/update/<string:id>', methods=['GET', 'POST'])
-def update(id):
-    pass
+#     # Validate presence of UniqueID in database
+#     product_exists_query = "SELECT EXISTS({});".format(GET_PRODUCT)
+#     cur.execute(product_exists_query, (uniqueId,))
+#     if (cur.fetchone()[0]) == False:
+#         return "Product already deleted from catalog"
+
+#     cur.execute(GET_CATEGORY_ID, (uniqueId,))
+#     category_id = cur.fetchone()[0]
+#     cur.execute(DELETE_PRODUCT, (uniqueId,))
+#     cur.execute(OTHER_CATEGORY_PRODUCT_EXISTS, (category_id,))
+#     category_exists = cur.fetchone()[0]
+#     if  category_exists == False:
+#         cur.execute(DELETE_CATEGORY, (category_id,))
+
+#     return "Product deleted from table"
+
+    
+# @app.route('/update/<string:id>', methods=['PUT'])
+# def update_product():
+#     pass
 
 
 @app.route('/subcategory-names', methods=['GET'])
@@ -241,17 +303,16 @@ def render_subcategory_names():
 
     conn = get_db_connection()
     cur = conn.cursor()
-    subcategories = {}
     men_categories = []
     women_categories = []
+
+    # get the subcategories under men
     cur.execute(GET_SUBCATEGORY_NAMES, ("men",))
     for subcategory in cur.fetchall():
         if subcategory[0] != "":
             men_categories.append(subcategory[0])
-    # subcategories['men'] = cur.fetchone()[0]
-    # print(subcategories['men'])
-    # print(men_categories)
-    # print(subcategories['men'][0])
+    
+    # get the subcategories under women
     cur.execute(GET_SUBCATEGORY_NAMES, ("women",))
     for subcategory in cur.fetchall():
         if subcategory[0] != "":
@@ -260,6 +321,7 @@ def render_subcategory_names():
 
 
 @app.route('/product-search')
+@cache.cached(timeout=30, query_string=True)
 def productQuery():
 
     final_url="https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?"
@@ -272,12 +334,10 @@ def productQuery():
     return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
 
 
+@app.route('/')
+def hello():
+    return 'Hello World! I have been seen'
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-
