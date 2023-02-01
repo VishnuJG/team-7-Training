@@ -55,8 +55,8 @@ window.onload=function(){
                 prod_div.innerHTML+=`
                 <div class="unique_card" >
                     <img id="product_image" src=`+ data.imageurl+`/><br/>
-                    <p id="price" >$ ${data.price}</p>
                     <p id="title">${ data.title.charAt(0).toUpperCase() + data.title.slice(1)}</p>
+                    <p id="price" >$ ${data.price}</p>
                     <p id="desc">${data.description!=null ? data.description : ""}</p>
                 </div> `;
             }

@@ -5,14 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="categoryPage.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
-        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="categoryPage.js"></script>
         
     </head>
-    <body>
+    <body style="background-color: #e3e4db">
+        <div class="container-fluid">
+            <h1 class="logo" data-text="Shopinger"></h1>
+          </div>
         <!-- Header file included as an iframe -->
-        <iframe src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
+        <iframe class="container" src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
         
         <!-- Sort buttons based on price -->
         <select name="sort-button" id="sort-button" style="left: 220; " onchange="sortHandler()">
@@ -25,54 +30,21 @@
         <div  id="loader"><img class="loader" src="https://cdn.dribbble.com/users/1487848/screenshots/6379337/loading-imwith2.gif"/></div>
 
         <!-- Div container having all the product cards to be displayed -->
-        <div class="products_container" id="product_list">
+        <div class="products_container container " id="product_list">
            
         </div>
 
-        <br/>
-        <br/>
-        <br/>
-
-
+       
+        &nbsp;
         <!-- Page shifting buttons for next page and previous page -->
-        <div class="pagination-div" style="display:none" id="pagination-div">
+        <div class="pagination-div container col-lg-10" style="display:none" id="pagination-div">
             
-            <button id="page-left" class="pagination-button" disabled onclick="pageButtonHandler('left')"> &lt; </button>
+            <button id="page-left" class="pagination-button button-30" disabled onclick="pageButtonHandler('left')"> &lt; </button>
             <p id="page-num" class="pagination-button">1</p>
-            <button id="page-right" class="pagination-button" onclick="pageButtonHandler('right')"> &gt; </button>
+            <button id="page-right" class="pagination-button button-30" onclick="pageButtonHandler('right')"> &gt; </button>
             <p id="total-products" class="pagination-button"></p>
         </div>
-
+        &nbsp;
     </body>
-
-
-    <!-- Jquery Script for sort functionality -->
-    <!-- <script>
-        
-
-        $('#sort-button').change(function () {
-            var divs = $(".card");
-            var sort_option=$("#sort-button").val();
-            if (sort_option == "priceAsc")
-            {
-                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
-                    return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?-1:0));
-                });
-            }
-            else if(sort_option=="priceDesc"){
-                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
-                    return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?-1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?1:0));
-                });
-            }
-            else{
-                var alphabeticallyOrderedDivs = divs.sort(function (a, b) {
-                return ((Number($(a).find("#price").text()) > Number($(b).find("#price").text()))?1:((Number($(a).find("#price").text()) < Number($(b).find("#price").text()))?-1:0));
-            });
-            }
-            
-            console.log(divs)
-            $(".products_container").html(alphabeticallyOrderedDivs);
-        });
-    </script> -->
    
 </html>

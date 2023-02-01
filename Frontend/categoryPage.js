@@ -19,6 +19,7 @@ window.onload=function(){
         onLoadSearchQueryHandler(params_dict, page_number);
     }
     else{
+        window.location=`Base.html?q=*&page=1`;
         // if neither search or category then just get random products
         var product_block=document.getElementById("product_list");
         fetch('http://127.0.0.1:5002/product-search?q=*&page=1', {
@@ -34,9 +35,9 @@ window.onload=function(){
             for (const prod of data[1]){
                 var tempid=String(prod.uniqueId);
                 product_block.innerHTML+=`
-                <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
+                <div class="card " onclick="window.open('Product.html?uid=${tempid}','_blank');">
                     <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p >$ <span id="price">${prod.price}</span></p>
+                    <p id="price-p">$ <span id="price">${prod.price}</span></p>
                     <p id="desc">${prod.title.charAt(0).toUpperCase() + prod.title.slice(1)}</p>
                 </div> `
             }
@@ -77,7 +78,7 @@ function onLoadSearchQueryHandler(params_dict, page_number){
                 product_block.innerHTML+=`
                 <div class="card" onclick="window.open('Product.html?uid=${tempid}','_blank');">
                     <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p>$ <span id="price">${prod.price}</span></p>
+                    <p id="price-p">$ <span id="price">${prod.price}</span></p>
                     <p id="desc">${prod.title.charAt(0).toUpperCase() + prod.title.slice(1)}</p>
                 </div> `
             }
@@ -118,8 +119,8 @@ function onLoadCategoryHandler(params_dict, page_number){
                 product_block.innerHTML+=`
                 <div class="card" onclick="window.open('Product.html?catuid=${tempid}','_blank');">
                     <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p>$ <span id="price">${prod.price}</span></p>
-                    <p id="desc">${prod.title}</p>
+                    <p id="price-p">$ <span id="price">${prod.price}</span></p>
+                    <p id="desc">${prod.title.charAt(0).toUpperCase() + prod.title.slice(1)}</p>
                 </div> `
             }
             document.getElementById("loader").style.display='none';
