@@ -1,59 +1,64 @@
 body{
     background-color: rgba(3, 0, 45, 0);
-    padding : 5px 10px;
-    /* box-shadow: 0 0 25px rgba(232, 225, 225, 0.716), 6px 5px 5px rgba(0,0,0,.1); */
-    /* padding:5px */
 }
 
+                        /* DropDown specific styling */
 
 select{
-    padding-left : 10px;
-    padding-right : 10px;
-    padding-top : 5px;
-    padding-bottom: 5px;
     margin-left : 20px;
     width : 200px;
     font-size : medium;
-    background-color : rgb(107, 104, 104);
-    color :white;
-    border: 2px solid blue ;
-    border-style: outset;
-    /* border: none; */
-    position: absolute;  
-    border: solid; 
-    /* bottom: 8;    */
     text-overflow: ellipsis;
+	padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: grey;
+    background: rgb(207, 201, 201);
+    cursor: pointer;
+    position: absolute;
+    z-index: 0;
+    border-radius: 25px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+	transition: 0.8s;
 }
 
 select:hover{
     background-color: grey;
     color:white;
 }
+  
 
-img{
-    float: left;
-    position: absolute;
-    height: 60%;
-    width : 8%;
-}
 
+
+                        /* Search functionality specific styling */
 
 #search_button{
-    position: absolute; 
-    right:10px;
-    height:23%;
+	position: absolute; 
+	right:10px;
+	height:23%;
 }
 
 #search_val{
-    padding-left : 10px;
-    padding-right : 5px;
-    padding-top : 5px;
-    padding-bottom: 5px;
+
     margin-left : 20px;
     width:20%;
     height:23%;
-    position:absolute; 
     right:60px;
+    padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: rgb(0, 0, 0);
+    background: rgb(207, 201, 201);
+    cursor: pointer;
+    position: absolute;
+    z-index: 0;
+    border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+	transition: 0.8s;
 }
 
 #search_val:focus{
@@ -61,72 +66,48 @@ img{
     color:white;
 }
 
-.exp-button{
-    padding-left:10px;
-    padding-right:10px;
-    padding-top:5px;
-    padding-bottom: 5px;
-    margin-left : 20px;
-    width:100px;
-    font-size:medium;
-    background-color: rgb(107, 104, 104);
-    color:rgb(0, 0, 0);
-    border: 2px solid blue ;
-    border-style: outset;
-    position: absolute;  
-    border: solid; 
-    /* bottom: 8;    */
-    text-overflow: ellipsis;
-    left:440px;
-}
-
-.exp-button:hover{
-    background-color: grey;
-    color:white;
-}
-
 
 #search_button {
-  padding: 0.6em 1em;
-  border: none;
-  outline: none;
-  color: rgb(255, 255, 255);
-  background: #111;
-  cursor: pointer;
-  position: absolute;
-  z-index: 0;
-  border-radius: 10px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+	padding: 0.6em 1em;
+	border: none;
+	outline: none;
+	color: rgb(255, 255, 255);
+	background: #111;
+	cursor: pointer;
+	position: absolute;
+	z-index: 0;
+	border-radius: 10px;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
 }
 
 #search_button:before {
-  content: "";
-  background: linear-gradient(
-    45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #48ff00,
-    #00ffd5,
-    #002bff,
-    #7a00ff,
-    #ff00c8,
-    #ff0000
-  );
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  background-size: 400%;
-  z-index: -1;
-  filter: blur(5px);
-  -webkit-filter: blur(5px);
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  animation: glowing-button-85 20s linear infinite;
-  transition: opacity 0.3s ease-in-out;
-  border-radius: 10px;
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#ff0000,
+		#ff7300,
+		#fffb00,
+		#48ff00,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#ff00c8,
+		#ff0000
+	);
+	position: absolute;
+	top: -2px;
+	right: -2px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(5px);
+	-webkit-filter: blur(5px);
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	animation: glowing-button-85 20s linear infinite;
+	transition: opacity 0.3s ease-in-out;
+	border-radius: 10px;
 }
 
 @keyframes glowing-button-85 {
@@ -142,91 +123,28 @@ img{
 }
 
 #search_button:after {
-  z-index: -1;
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #222;
-  left: 0;
-  top: 0;
-  border-radius: 10px;
+	z-index: -1;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #222;
+	left: 0;
+	top: 0;
+	border-radius: 10px;
 }
 
 
+                        /* Category specific styling */
 
-
-#search_val {
-    padding: 0.6em 2em;
-    border: none;
-    outline: none;
-    color: rgb(0, 0, 0);
-    background: rgb(207, 201, 201);
-    cursor: pointer;
-    position: absolute;
-    z-index: 0;
-    border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  #search_val:before {
-    content: "";
-    background: linear-gradient(
-      45deg,
-      #ff0000,
-      #ff7300,
-      #fffb00,
-      #48ff00,
-      #00ffd5,
-      #002bff,
-      #7a00ff,
-      #ff00c8,
-      #ff0000
-    );
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing-button-85 20s linear infinite;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-  }
-  
-  @keyframes glowing-button-85 {
-    0% {
-      background-position: 0 0;
-    }
-    50% {
-      background-position: 400% 0;
-    }
-    100% {
-      background-position: 0 0;
-    }
-  }
-  
-  #search_val:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-  }
-
-
-
-  select {
-    padding: 0.6em 2em;
+.exp-button{
+    
+    margin-left : 20px;
+    width:7%;
+    font-size:medium;
+    text-overflow: ellipsis;
+    left:440px;
+	padding: 0.6em 2em;
     border: none;
     outline: none;
     color: grey;
@@ -234,79 +152,18 @@ img{
     cursor: pointer;
     position: absolute;
     z-index: 0;
-    border-radius: 10px;
+    border-radius: 25px;
     user-select: none;
     -webkit-user-select: none;
+	transition: 0.8s;
     touch-action: manipulation;
-  }
-  
-  select:before {
-    content: "";
-    background: linear-gradient(
-      45deg,
-      #ff0000,
-      #ff7300,
-      #fffb00,
-      #48ff00,
-      #00ffd5,
-      #002bff,
-      #7a00ff,
-      #ff00c8,
-      #ff0000
-    );
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing-button-85 20s linear infinite;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-  }
-  
-  @keyframes glowing-button-85 {
-    0% {
-      background-position: 0 0;
-    }
-    50% {
-      background-position: 400% 0;
-    }
-    100% {
-      background-position: 0 0;
-    }
-  }
-  
-  select:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-  }
+}
 
+.exp-button:hover{
+    background-color: grey;
+    color:white;
+}
 
-  .exp-button {
-    padding: 0.6em 2em;
-    border: none;
-    outline: none;
-    color: grey;
-    background: rgb(207, 201, 201);
-    cursor: pointer;
-    position: absolute;
-    z-index: 0;
-    border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
   
 
   
