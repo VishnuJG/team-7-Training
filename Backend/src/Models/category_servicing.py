@@ -39,15 +39,15 @@ class Category():
         category_products = [] 
 
         # Lookup category ID of corresponding hierarchy from category table
-        print(db.read_from_db(GET_CATEGORY_ID, (self.subcategory_name, self.parent_name)))
-        self.category_id  = (db.read_from_db(GET_CATEGORY_ID, (self.subcategory_name, self.parent_name)))[0]
         
+        self.category_id  = db.read_from_db(GET_CATEGORY_ID, (self.subcategory_name, self.parent_name))
+        if len(self.category_id) < 1:
+            return "Error: Invalid category"
+        else:
+            self.category_id = self.category_id[0]
         # print(self.catlevel2Name, self.catlevel1Name)
 
-        # Check if the given hierarchy exists in database
-        if len(str(self.category_id)) < 1:
-            return "Invalid category"
-
+    
         # Retrieve all rows having respective category ID from product table
         products = db.read_from_db(GET_CATEGORY_PRODUCTS, (self.category_id,))
         # cur.execute(GET_CATEGORY_PRODUCTS, (self.category_id,))
@@ -58,15 +58,7 @@ class Category():
             product_details = Product(uniqueId=product[0], productDescription=product[2], title=product[1], price=product[3], productImage=product[4])
             
             product_details = json.loads(product_details.product_to_json())
-            # # print(product)
-            # product_details = {}
-            # product_details['uniqueId'] = product[0]
-            # product_details['title'] = product[1]
-            # # product_details['description'] = product[2]
-            # product_details['price'] = product[3]
-            # product_details['productImage'] = product[4]
-            # # print(product_details)
-            # # product_details = json.dumps(product_details)
+            
             category_products.append(product_details)
         
         return category_products
@@ -76,11 +68,14 @@ class Category():
 
         db = Database()
         category_products = [] 
+        # caetgory_flag = db.read_from_db(CATEGORY_ID_EXISTS, (cat))
         ids = db.read_from_db(GET_CATEGORY_L1, (self.parent_name,))
-
+        print(ids)
+        print(type(ids))
+        
         # Check if the given hierarchy exists in database
-        # if len(str(category_id)) < 1:
-        #     return "Invalid category"
+        if len(ids) < 1:
+            return "Error: Invalid category"
         # print(ids)
 
         for category_id in ids:
@@ -90,15 +85,6 @@ class Category():
             for product in products:
                 product_details = Product(uniqueId=product[0], productDescription=product[2], title=product[1], price=product[3], productImage=product[4])
                 product_details = json.loads(product_details.product_to_json())
-                # # print(product)
-                # product_details = {}
-                # product_details['uniqueId'] = product[0]
-                # product_details['title'] = product[1]
-                # # product_details['description'] = product[2]
-                # product_details['price'] = product[3]
-                # product_details['productImage'] = product[4]
-                # # print(product_details)
-                # # product_details = json.dumps(product_details)
                 category_products.append(product_details)
 
         return category_products
@@ -109,12 +95,15 @@ class Category():
         params_list = ['sort', 'page']
         # category = Category()
         self = self.validate_parameters(request, params_list)
-        
+
         # print(self.subcategory_name)
         if self.subcategory_name == "":
             category_products = self.get_l1_category_products()
         else:
             category_products = self.get_l2_category_products()
+
+        if "Error" in category_products:
+            return category_products
 
         num_products = len(category_products)
         # print(num_products)
@@ -150,6 +139,8 @@ def render_subcategory_names():
 
     # get the subcategories under men
     data = db.read_from_db(GET_SUBCATEGORY_NAMES, ("men",))
+    if len(data) < 1:
+        return "Error: No subcategories available"
     # cur.execute(GET_SUBCATEGORY_NAMES, ("men",))
     for subcategory in data:
         if subcategory[0] != "":
@@ -157,7 +148,8 @@ def render_subcategory_names():
     
     # get the subcategories under women
     data = db.read_from_db(GET_SUBCATEGORY_NAMES, ("men",))
-    # cur.execute(GET_SUBCATEGORY_NAMES, ("women",))
+    if len(data) < 1:
+        return "Error: No subcategories available"
     for subcategory in data:
         if subcategory[0] != "":
             women_categories.append(subcategory[0])

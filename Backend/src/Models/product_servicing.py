@@ -31,21 +31,6 @@ class Product():
         return json.dumps(product_details)
 
 
-    # """
-    #     Validation for the presence of query parameters in the database
-    #     Args: list of keys to validate
-    #     Returns: dict params_dict containing parsed values of parameters
-    # """
-
-    # def validate_parameters(self, request, params_list):
-        
-    #     for param in params_list:
-    #         if param not in request.args:
-    #             self.param = ""
-    #         else:
-    #             self.param = request.args.get(param)
-    #     return self
-
     
     def get_catalog_product_details(self):
 
@@ -54,18 +39,23 @@ class Product():
         # Validate presence of UniqueID in database
         product_exists_query = "SELECT EXISTS({});".format(GET_PRODUCT)
         product_exists = db.read_from_db(product_exists_query)
+        # if "Error" in product_exists:
+        #     return product_exists
         
         # cur.execute(product_exists_query, (self.uniqueId,))
         if (product_exists[0]) == False:
-            return "Requested product not present in catalog"
+            return "Error: Requested product not present in catalog"
 
         # Find corresponding product details from product table
 
         query_response = db.read_from_db(GET_PRODUCT+";", (str(self.uniqueId),))
-
+        
+        if "Error" in query_response:
+            return query_response
+        
         # Create JSON object as response
-        print("TITLE", query_response)
-        print(self.uniqueId)
+        # print("TITLE", query_response)
+        # print(self.uniqueId)
 
         self.title = query_response[0][1]
         self.productDescription = query_response[0][2]
