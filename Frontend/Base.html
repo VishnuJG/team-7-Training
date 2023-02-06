@@ -12,15 +12,18 @@
         <script src="categoryPage.js"></script>
         
     </head>
-    <body style="background-color: #e3e4db">
-        <div class="container-fluid">
-            <h1 class="logo" data-text="Shopinger"></h1>
-          </div>
-        <!-- Header file included as an iframe -->
-        <iframe class="container" src="Header.html" title="header" style="width:100%" frameBorder="0"></iframe>
+    <body style="background-color: #ffffff;">
+        <div class="looksgood" >
+            
+            <iframe class="container-fluid" src="Header.html" title="header" style="width:100%;" height="400" frameBorder="0" ></iframe>
+            <!-- <img class="logo"  src="Screenshot_2023-02-02_at_2.28.57_PM-removebg-preview.png"/> -->
+        </div>
+
         
+
+        &nbsp;&nbsp;
         <!-- Sort buttons based on price -->
-        <select name="sort-button" id="sort-button" style="left: 220; " onchange="sortHandler()">
+        <select name="sort-button" id="sort-button"  onchange="sortHandler()">
             <option value="" selected disabled hidden >Sort</option>
             <option value="price asc">Price-Asc</option>
             <option value="price desc">Price-Desc</option>
@@ -29,6 +32,8 @@
 
         <div  id="loader"><img class="loader" src="https://cdn.dribbble.com/users/1487848/screenshots/6379337/loading-imwith2.gif"/></div>
 
+
+        &nbsp;
         <!-- Div container having all the product cards to be displayed -->
         <div class="products_container container " id="product_list">
            
@@ -37,11 +42,11 @@
        
         &nbsp;
         <!-- Page shifting buttons for next page and previous page -->
-        <div class="pagination-div container col-lg-10" style="display:none" id="pagination-div">
+        <div class="pagination-div container-fluid col-lg-6" style="display:none" id="pagination-div">
             
-            <button id="page-left" class="pagination-button button-30" disabled onclick="pageButtonHandler('left')"> &lt; </button>
+            <button id="page-left" class="pagination-button page-buttons" disabled onclick="pageButtonHandler('left')"> &lt; </button>
             <p id="page-num" class="pagination-button">1</p>
-            <button id="page-right" class="pagination-button button-30" onclick="pageButtonHandler('right')"> &gt; </button>
+            <button id="page-right" class="pagination-button page-buttons" onclick="pageButtonHandler('right')"> &gt; </button>
             <p id="total-products" class="pagination-button"></p>
         </div>
         &nbsp;

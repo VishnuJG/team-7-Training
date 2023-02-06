@@ -4,7 +4,7 @@ class Database:
 
     def __init__(self):
         self.conn = ""
-        self.host = "localhost"
+        self.host = "db-container"
         self.name = "unbxddatabase"
         self.user = "unbxd"
         self.password = "unbxd"
@@ -44,8 +44,8 @@ class Database:
             data = cur.fetchall()
         except Exception as e:
             print(e)
-            print("Transaction unsuccessful")
-            return "Transaction unsuccesful"
+            return "Error: " + str(e)
+            
 
         self.close_db_connection(conn, cur)
 
@@ -60,11 +60,10 @@ class Database:
             cur.execute(query, params_tuple)
         except Exception as e:
             print(e)
-            print("Transaction unsuccessful")
-            return "Transaction unsuccessful"
+            return "Error: " + str(e)
 
         self.close_db_connection(conn, cur)
-        return "Transaction successful" 
+        return "Success"
 
 
     def create_table(self, query):
@@ -72,8 +71,9 @@ class Database:
         
         try:
             cur.execute(query)
-        except:
-            return "Unable to create table"
+        except Exception as e:
+            print(e)
+            return "Error: " + str(e)
 
         self.close_db_connection(conn, cur)
-        return "Table created" 
+        return "Success"

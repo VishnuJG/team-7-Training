@@ -32,7 +32,7 @@ function searchFunction(){
 window.onload=function(){
     var men_dropdown=document.getElementById("cats1");
     var women_dropdown=document.getElementById("cats2");
-    fetch('http://127.0.0.1:5002/subcategory-names', {
+    fetch('http://127.0.0.1:5002/category/', {
             method: 'GET',
             mode : 'cors',
                     headers: {
@@ -43,13 +43,17 @@ window.onload=function(){
         }).then(response => response.json()).then((data)=>{
             console.log(data);
             for (const prod of data['men']){
-
+                if(prod==" "){
+                    continue;
+                }
                 men_dropdown.innerHTML+=`
                 <option value='${prod}'>${prod}</option>`
             
             }
             for (const prod of data['women']){
-
+                if(prod==" "){
+                    continue;
+                }
                 women_dropdown.innerHTML+=`
                 <option value='${prod}'>${prod}</option>`
             

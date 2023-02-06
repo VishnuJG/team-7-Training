@@ -1,0 +1,10 @@
+version: '3'
+services:
+  frontend:
+    image: jgvishnu/thakur:v1
+    restart : always
+    ports:
+      - "80:80"
+
+       
+    
