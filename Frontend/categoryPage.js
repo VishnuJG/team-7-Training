@@ -106,6 +106,7 @@ function onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value)
         final_search_query+='category1-details/'+cat1_value+"?";
     }
     else{
+        
         final_search_query+='category2-details/'+cat1_value+"/"+cat2_value+"?";
     }
 
@@ -140,8 +141,8 @@ function onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value)
             paginationHandler(data[0], page_number); //(number_of_products, page_number)
         }).catch(err=>{
 
-            window.location="Page404.html"
-            // console.log(err);
+            // window.location="Page500.html"
+            console.log(err);
         })
 }
 // Handles enabling and disabling button based on number of products left. Also renders stats like the total number of products and the number of products being displayed

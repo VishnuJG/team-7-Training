@@ -24,8 +24,8 @@ window.onload=function(){
                 prod_div.innerHTML+=`
                 <div class="unique_card" >
                     <img id="product_image" src=`+ filtered_data.productImage+`/><br/>
-                    <p id="price" >$ ${filtered_data.price}</p>
                     <p id="title">${ filtered_data.title.charAt(0).toUpperCase() + filtered_data.title.slice(1)}</p>
+                    <p id="price" >$ ${filtered_data.price}</p>
                     <p id="desc">${filtered_data.productDescription!=null ? filtered_data.productDescription : ""}</p>
                 </div> `;
             }
@@ -35,8 +35,8 @@ window.onload=function(){
             }
             document.getElementById("loader").style.display='none';
         }).catch(err=>{
-            // window.location="Page500.html"
-            console.log(err);
+            window.location="Page500.html"
+            // console.log(err);
         })
     }
     else{
@@ -63,13 +63,13 @@ window.onload=function(){
                 </div> `;
             }
             catch(err){
-                console.log(err);
-                // window.location = "Page404.html";
+                // console.log(err);
+                window.location = "Page404.html";
             }
             document.getElementById("loader").style.display='none';
         }).catch(err=>{
-            // window.location="Page500.html"
-            console.log(err);
+            window.location="Page500.html"
+            // console.log(err);
         })
     }
 }

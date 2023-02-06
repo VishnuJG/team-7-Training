@@ -50,7 +50,7 @@ class Product():
 
         query_response = db.read_from_db(GET_PRODUCT+";", (str(self.uniqueId),))
         
-        if "Error" in query_response:
+        if "Error" in query_response or len(query_response)<=0:
             return query_response
         
         # Create JSON object as response

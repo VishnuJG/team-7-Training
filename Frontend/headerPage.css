@@ -1,5 +1,5 @@
 body{
-    background-color: rgba(3, 0, 45, 0);
+    /* height: 1500px; */
 }
 
                         /* DropDown specific styling */
@@ -12,8 +12,8 @@ select{
 	padding: 0.6em 2em;
     border: none;
     outline: none;
-    color: grey;
-    background: rgb(207, 201, 201);
+    color: black;
+    background: #ffffff;
     cursor: pointer;
     position: absolute;
     z-index: 0;
@@ -25,8 +25,8 @@ select{
 }
 
 select:hover{
-    background-color: grey;
-    color:white;
+    background-color: #a2d6f9;
+    color:black;
 }
   
 
@@ -35,22 +35,23 @@ select:hover{
                         /* Search functionality specific styling */
 
 #search_button{
+    margin-top: 10px;
 	position: absolute; 
 	right:10px;
-	height:23%;
+	height:10%;
 }
 
 #search_val{
-
+    margin-top: 10px;
     margin-left : 20px;
     width:20%;
-    height:23%;
+    height:10%;
     right:60px;
     padding: 0.6em 2em;
     border: none;
     outline: none;
-    color: rgb(0, 0, 0);
-    background: rgb(207, 201, 201);
+    color: black;
+    background: #ffffff;
     cursor: pointer;
     position: absolute;
     z-index: 0;
@@ -62,8 +63,8 @@ select:hover{
 }
 
 #search_val:focus{
-    background-color: grey;
-    color:white;
+    background-color: #a2d6f9;
+    color:black;
 }
 
 
@@ -147,8 +148,8 @@ select:hover{
 	padding: 0.6em 2em;
     border: none;
     outline: none;
-    color: grey;
-    background: rgb(207, 201, 201);
+    color: black;
+    background: #ffffff;
     cursor: pointer;
     position: absolute;
     z-index: 0;
@@ -160,10 +161,139 @@ select:hover{
 }
 
 .exp-button:hover{
-    background-color: grey;
-    color:white;
+    background-color: #a2d6f9;
+    color:black;
 }
 
+
+.logo{
+	margin-left : 30%;
+    top:0;
+    /* width : 200px; */
+    /* font-size : medium; */
+    /* text-overflow: ellipsis; */
+	/* padding: 0.6em 2em; */
+    /* border: none;
+    outline: none;
+    color: black; */
+    /* float:center; */
+    /* cursor: pointer; */
+    position: absolute;
+    z-index: 0;
+    /* border-radius: 25px; */
+    /* user-select: none; */
+    /* -webkit-user-select: none; */
+    /* touch-action: manipulation; */
+	transition: 0.8s;
+    height: 100%;
+}
+
+
+.logo:before,
+.logo:after {
+	content:attr(data-text);
+	transition:.6s;
+}
+.logo:before {
+	left: 0;
+	top: 0;
+	position: absolute;
+	z-index:-1;
+	text-shadow:
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px,
+		0px 0px;
+	-webkit-mask:repeating-linear-gradient(45deg, transparent 0 3px, rgba(0,0,0,0.5) 0 6px);
+			mask:repeating-linear-gradient(45deg, transparent 0 3px, rgba(0,0,0,0.5) 0 6px);
+}
+.logo:hover {
+	transform:translate(-10px,-10px);
+}  
+.logo:hover:before {
+	text-shadow:
+		1px 1px,
+		2px 2px,
+		3px 3px,
+		4px 4px,
+		5px 5px,
+		6px 6px,
+		7px 7px,
+		8px 8px,
+		9px 9px,
+		10px 10px;
+}
+
+ @keyframes lights {
+    0% {
+      color: hsl(230, 40%, 80%);
+      text-shadow:
+        0 0 1em hsla(320, 100%, 50%, 0.2),
+        0 0 0.125em hsla(320, 100%, 60%, 0.3),
+        -1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+        1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+    }
+    
+    30% { 
+      color: hsl(230, 80%, 90%);
+      text-shadow:
+        0 0 1em hsla(320, 100%, 50%, 0.5),
+        0 0 0.125em hsla(320, 100%, 60%, 0.5),
+        -0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+        0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
+    }
+    
+    40% { 
+      color: hsl(230, 100%, 95%);
+      text-shadow:
+        0 0 1em hsla(320, 100%, 50%, 0.5),
+        0 0 0.125em hsla(320, 100%, 90%, 0.5),
+        -0.25em -0.125em 0.125em hsla(40, 100%, 60%, 0.2),
+        0.25em 0.125em 0.125em hsla(200, 100%, 60%, 0.4);
+    }
+    
+    70% {
+      color: hsl(230, 80%, 90%);
+      text-shadow:
+        0 0 1em hsla(320, 100%, 50%, 0.5),
+        0 0 0.125em hsla(320, 100%, 60%, 0.5),
+        0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+        -0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
+    }
+    
+    100% {
+      color: hsl(230, 40%, 80%);
+      text-shadow:
+        0 0 1em hsla(320, 100%, 50%, 0.2),
+        0 0 0.125em hsla(320, 100%, 60%, 0.3),
+        1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+        -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+    }
+    
+  }
+  
+h1 {
+	margin: auto;
+	/* font-size: 3.5rem; */
+	font-weight: 100;
+	animation: lights 5s 750ms linear infinite;
+	position: relative;
+	font-size: 5em;
+	letter-spacing:10px;
+	font-family: sans-serif;
+	display:table;
+	margin:40px auto;
+	cursor:pointer;
+	transition:.6s;
+	/* font-weight: bold; */
+	color:white;
+}
   
 
   

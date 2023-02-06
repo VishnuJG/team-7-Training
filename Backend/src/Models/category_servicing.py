@@ -147,7 +147,7 @@ def render_subcategory_names():
             men_categories.append(subcategory[0])
     
     # get the subcategories under women
-    data = db.read_from_db(GET_SUBCATEGORY_NAMES, ("men",))
+    data = db.read_from_db(GET_SUBCATEGORY_NAMES, ("women",))
     if len(data) < 1:
         return "Error: No subcategories available"
     for subcategory in data:
