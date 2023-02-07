@@ -1,11 +1,20 @@
 from queries import *
 import json
-import Operations
-from Operations.unbxdAPI import UnbxdAPI
-from Operations.database import Database
+import operations
+from operations.unbxdAPI import UnbxdAPI
+from operations.database import Database
 
 
 class Product():
+
+    uniqueId = ""
+    title = ""
+    price = ""
+    productDescription = ""
+    productImage = ""
+    catlevel1Name = ""
+    catlevel2Name = ""
+    category_id = ""
 
     def __init__(self, uniqueId="", title="", price="", productDescription="", productImage="", catlevel1Name="", catlevel2Name="", category_id=""):
         self.uniqueId = uniqueId

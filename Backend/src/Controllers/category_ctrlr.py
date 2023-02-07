@@ -1,12 +1,12 @@
 from flask import Blueprint, request, Response
 import json
-# import Models
+# import models
 import sys
 
 sys.path.append('../')
 
 from cacher import cache
-from Models.category_servicing import Category, render_subcategory_names
+from models.category_servicing import Category, render_subcategory_names
 categoryCtrlr = (Blueprint("category", __name__))
 
 

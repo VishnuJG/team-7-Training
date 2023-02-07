@@ -1,7 +1,7 @@
 from flask import Blueprint, Response
 import json
-import Models
-from Models.product_servicing import Product
+import models
+from models.product_servicing import Product
 
 productsCtrlr = (Blueprint("products", __name__))
 

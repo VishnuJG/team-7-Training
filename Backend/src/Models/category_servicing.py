@@ -1,11 +1,16 @@
-import Operations, Models
-from Operations.database import Database
-from Models.product_servicing import Product
+import operations, models
+from operations.database import Database
+from models.product_servicing import Product
 from queries import *
 import json
 
 
 class Category():
+    category_id = ""
+    parent_name = ""
+    subcategory_name = ""
+    sort = ""
+    page = "1"
 
     def __init__(self, category_id="", parent_name="", subcategory_name="", sort="", page="1"):
         self.category_id = category_id
