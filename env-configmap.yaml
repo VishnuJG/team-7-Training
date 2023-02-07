@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  CACHE_DEFAULT_TIMEOUT: "500"
+  CACHE_REDIS_DB: "0"
+  CACHE_REDIS_HOST: redis
+  CACHE_REDIS_PORT: "6379"
+  CACHE_REDIS_URL: redis://redis:6379/0
+  CACHE_TYPE: redis
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api-env
+  name: env
