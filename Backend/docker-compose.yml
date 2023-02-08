@@ -4,7 +4,7 @@ services:
     
     container_name: jgvishnu/backend-api
     build: .
-    entrypoint: python3 src/app.py
+    entrypoint: python3 src/wsgi.py
     env_file:
       - .env
     ports:
@@ -21,7 +21,6 @@ services:
     container_name: db-container
     ports:
       - "5432:5432"
-    restart : always
     environment:
       POSTGRES_USER : unbxd
       POSTGRES_PASSWORD : unbxd

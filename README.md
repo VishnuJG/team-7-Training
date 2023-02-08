@@ -51,7 +51,7 @@ Host: localhost
 API to fetch all the products from the UNBXD search API
 ```
 GET-
-GET /product-search?page=*&sort=* HTTP/1.1
+GET /search?page=*&sort=* HTTP/1.1
 Host: localhost
 ```
 
