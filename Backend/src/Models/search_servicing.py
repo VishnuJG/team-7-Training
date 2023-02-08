@@ -3,6 +3,8 @@ import json
 
 class Search():
 
+    url = ""
+
     def __init__(self):
 
         

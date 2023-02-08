@@ -1,5 +1,5 @@
-import Operations
-from Operations.database import Database
+import operations
+from operations.database import Database
 from queries import *
 
 class DataIngestor:
@@ -20,7 +20,7 @@ class DataIngestor:
         if "Error" in status:
             return status
         status = db.create_table(CREATE_CATEGORY_TABLE)
-        if "Error" in status:
+        if "Error" in status: 
             return status
 
         params_list = ['uniqueId', 'title', 'price', 'productDescription', 'productImage', 'catlevel1Name', 'catlevel2Name']
