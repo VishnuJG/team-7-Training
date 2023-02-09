@@ -5,6 +5,8 @@ from models.product_servicing import Product
 
 productsCtrlr = (Blueprint("products", __name__))
 
+
+# Retrieves product detials from a single product belonging to a hierarchy of categories
 @productsCtrlr.route('/catalog/<string:uniqueId>', methods=['GET'])
 def call_catalog_product_details(uniqueId):
 
@@ -21,6 +23,7 @@ def call_catalog_product_details(uniqueId):
     return details
 
 
+# Retrieves product detials from a single product searched for 
 @productsCtrlr.route('/search/<string:uniqueId>', methods=['GET'])
 def call_searched_product_details(uniqueId):
 

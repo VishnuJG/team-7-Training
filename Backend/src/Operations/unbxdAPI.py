@@ -10,8 +10,10 @@ class UnbxdAPI:
 
     """
         Connect to the unbxdAPI
-        Args: url to connect to
-        Returns: [number of products , products list]
+        Args: URL to connect to
+        Returns: list
+                 first element is the total number of products 
+                 Second element is a list of products
     """
 
     def fetch_data_from_API(self, final_url):
