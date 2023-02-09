@@ -28,5 +28,8 @@ class Search():
         # Send a GET request to the UNBXD Search API
         unbxd_val = requests.get(self.url).content
         unbxd_val = json.loads(unbxd_val)
-        return [unbxd_val['response']['numberOfProducts'], unbxd_val['response']['products']]
+        result = []
+        for product in unbxd_val['response']['products']:
+            result.append({'uniqueId': product['uniqueId'], 'title': product['title'], 'productdescription': product['productDescription'], 'price': product['price'], 'productimage': product['productImage'], 'catlevel1name': product['catlevel1Name'], 'catlevel2name': product['catlevel2Name']})
+        return [unbxd_val['response']['numberOfProducts'], result]
 

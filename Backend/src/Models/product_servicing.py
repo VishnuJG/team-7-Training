@@ -80,10 +80,10 @@ class Product():
     """
     def get_searched_product_details(self):
         unbxdAPI_obj=UnbxdAPI()
+        product = Product(uniqueId=self.uniqueId)
 
         # Create URL using UniqueId of the requested product
         final_url=unbxdAPI_obj.url+'q=uniqueId '+self.uniqueId
-        
         return unbxdAPI_obj.fetch_data_from_API(final_url)
         
 
