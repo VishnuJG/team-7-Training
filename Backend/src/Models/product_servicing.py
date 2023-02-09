@@ -16,6 +16,7 @@ class Product():
     catlevel2Name = ""
     category_id = ""
 
+
     def __init__(self, uniqueId="", title="", price="", productDescription="", productImage="", catlevel1Name="", catlevel2Name="", category_id=""):
         self.uniqueId = uniqueId
         self.title = title
@@ -27,7 +28,9 @@ class Product():
         self.category_id = category_id
         
 
-
+    """
+        Converts product details from a product object to JSON format
+    """
     def product_to_json(self):
 
         product_details = {}
@@ -40,7 +43,10 @@ class Product():
         return json.dumps(product_details)
 
 
-    
+    """
+        Retrieves product detials from a single product belonging to a hierarchy of categories
+        Returns: JSON object
+    """
     def get_catalog_product_details(self):
 
         db = Database()
@@ -48,35 +54,34 @@ class Product():
         # Validate presence of UniqueID in database
         product_exists_query = "SELECT EXISTS({});".format(GET_PRODUCT)
         product_exists = db.read_from_db(product_exists_query)
-        # if "Error" in product_exists:
-        #     return product_exists
         
-        # cur.execute(product_exists_query, (self.uniqueId,))
+        # If read from database is empty, product does not exist
         if (product_exists[0]) == False:
             return "Error: Requested product not present in catalog"
 
         # Find corresponding product details from product table
-
         query_response = db.read_from_db(GET_PRODUCT+";", (str(self.uniqueId),))
         
         if "Error" in query_response or len(query_response)<=0:
             return query_response
         
-        # Create JSON object as response
-        # print("TITLE", query_response)
-        # print(self.uniqueId)
-
+        # Create a Product object
         self.title = query_response[0][1]
         self.productDescription = query_response[0][2]
         self.price = str(query_response[0][3])
         self.productImage= query_response[0][4]
         print("Product request processed")
         return self.product_to_json()
-        # convert to json in controller
 
 
+    """
+        Retrieves product detials from a single product searched for 
+        Returns: JSON object
+    """
     def get_searched_product_details(self):
         unbxdAPI_obj=UnbxdAPI()
+
+        # Create URL using UniqueId of the requested product
         final_url=unbxdAPI_obj.url+'q=uniqueId '+self.uniqueId
         
         return unbxdAPI_obj.fetch_data_from_API(final_url)

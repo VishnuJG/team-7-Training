@@ -35,22 +35,34 @@ class Database:
         return
 
 
+    """
+        Read operation from the database
+        Args: query to be executed
+              tuple of parameters for the query 
+        Returns: list
+    """
+
     def read_from_db(self, query, params_tuple=()):
+
         conn, cur = self.connect_to_db()
 
         try:
-            # print(params_tuple)
             cur.execute(query, params_tuple)
             data = cur.fetchall()
         except Exception as e:
             print(e)
             return "Error: " + str(e)
             
-
         self.close_db_connection(conn, cur)
-
         return data
 
+
+    """
+        Write operation to the database
+        Args: query to be executed
+              tuple of parameters for the query 
+        Returns: status message
+    """
 
     def write_to_db(self, query, params_tuple):
         conn, cur = self.connect_to_db()
@@ -66,6 +78,11 @@ class Database:
         return "Success"
 
 
+    """
+        Create a table in the database
+        Args: query to be executed
+        Returns: status message
+    """
     def create_table(self, query):
         conn, cur = self.connect_to_db()
         
