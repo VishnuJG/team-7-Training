@@ -1,5 +1,4 @@
 # unbxd_team7
-E-commerce website assignment <br>
 Assignment briefing: https://docs.google.com/document/d/1x1ZnGbpnZDiuCTA8oWP1pvXK1Hdzw8XUlDzdjw5zQKM/edit?usp=sharing <br>
 Design document: https://docs.google.com/document/d/1Mp1Vo7OnLveeC7cfIkHc3Lhp2cZCQvZFSeLbucDRczY/edit?usp=sharing <br>
 <hr/>
@@ -18,28 +17,28 @@ Tech stack:
 
 # API specs 
 
-#### Category API
-API to fetch all the category names
+## Category API
+Endpoint to fetch all the category names
 ```
 GET-
 GET /catalog HTTP/1.1
 Host: localhost
 ```
-API to fetch all the products from a catgeory
+Endpoint to fetch all the products from a catgeory
 ```
 GET-
 GET /catalog/category1Name/category2Name?page=*&sort=* HTTP/1.1
 Host: localhost
 ```
 
-#### Product API
-API to fetch details about a single product from the search API
+## Product API
+Endpoint to fetch details about a single product from the search API
 ```
 GET-
 GET /product/(uniqueId)  HTTP/1.1
 Host: localhost
 ```
-API to fetch details about a single product from the database
+Endpoint to fetch details about a single product from the database
 ```
 GET-
 GET /product/catalog/(uniqueId)  HTTP/1.1
@@ -47,16 +46,16 @@ Host: localhost
 ```
 
 
-#### Search API
-API to fetch all the products from the UNBXD search API
+## Search API
+Endpoint to fetch all the products from the UNBXD search API
 ```
 GET-
 GET /search?page=*&sort=* HTTP/1.1
 Host: localhost
 ```
 
-#### Ingestion API
-API to push product details to the database
+## Ingestion API
+Endpoint to push product details to the database
 ```
 POST-
 POST /ingestion HTTP/1.1
@@ -84,13 +83,15 @@ CACHE_DEFAULT_TIMEOUT=500
 
 # Docker Installation Instruction
 To run backend:
-- Go to Assignment folder
+- Go to the 'backend' folder
 - Run: `docker-compose up -d --build`
 - On terminal run this command for data ingestion into database :
         ```curl http://127.0.0.1:5002/ingestion -d @out.json -H "Content-Type: application/json```
 
 
-To build frontend image:
+To run frontend:
+- Go to the 'frontend' folder
+- Build frontend image and run it:
 ```
 - docker build -t <name>:v1 . 
 - docker run -d -p 80:80 <name>:v1
