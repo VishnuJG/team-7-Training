@@ -2,7 +2,7 @@ version: '3'
 services:
   api:
     
-    container_name: jgvishnu/backend-api
+    container_name: backend-api
     build: .
     entrypoint: python3 src/app.py
     env_file:

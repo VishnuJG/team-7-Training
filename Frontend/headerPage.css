@@ -169,21 +169,8 @@ select:hover{
 .logo{
 	margin-left : 30%;
     top:0;
-    /* width : 200px; */
-    /* font-size : medium; */
-    /* text-overflow: ellipsis; */
-	/* padding: 0.6em 2em; */
-    /* border: none;
-    outline: none;
-    color: black; */
-    /* float:center; */
-    /* cursor: pointer; */
     position: absolute;
     z-index: 0;
-    /* border-radius: 25px; */
-    /* user-select: none; */
-    /* -webkit-user-select: none; */
-    /* touch-action: manipulation; */
 	transition: 0.8s;
     height: 100%;
 }
@@ -280,7 +267,6 @@ select:hover{
   
 h1 {
 	margin: auto;
-	/* font-size: 3.5rem; */
 	font-weight: 100;
 	animation: lights 5s 750ms linear infinite;
 	position: relative;
@@ -291,7 +277,6 @@ h1 {
 	margin:40px auto;
 	cursor:pointer;
 	transition:.6s;
-	/* font-weight: bold; */
 	color:white;
 }
   

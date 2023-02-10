@@ -1,19 +1,10 @@
-apiVersion: networking.k8s.io/v1
-   
+apiVersion: networking.k8s.io/v1  
 kind: Ingress
-   
 metadata:
-   
   name: example-ingress
-   
-  annotations:
-   
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-   
 spec:
-   
+  ingressClassName: nginx
   rules:
-   
     - host: theclothesline.info
    
       http:
@@ -28,8 +19,8 @@ spec:
    
               service:
    
-                name: frontend
+                name: frontend-service
    
                 port:
    
-                  number: 80
+                  number: 5678
