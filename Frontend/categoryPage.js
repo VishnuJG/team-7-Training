@@ -210,6 +210,9 @@ function pageButtonHandler(side){
         window.location=`${final_search_query}page=${cur_page_num + 1}`;
     }
 }
+
+
+//Handles sorting functionality by routing the page with the required params
 function sortHandler(){
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
