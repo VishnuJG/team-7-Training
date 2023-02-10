@@ -42,22 +42,19 @@ window.onload=function(){
                     }
         }).then(response => response.json()).then((data)=>{
             console.log(data);
-            for (const prod of data['men']){
-                if(prod==" "){
-                    continue;
-                }
-                men_dropdown.innerHTML+=`
-                <option value='${prod}'>${prod}</option>`
             
-            }
-            for (const prod of data['women']){
-                if(prod==" "){
-                    continue;
+            for (const key of Object.keys(data)){
+                for (const prod of data[key]){
+                    if(prod==" "){
+                        continue;
+                    }
+                    (key=='men')?men_dropdown.innerHTML+=`<option value='${prod}'>${prod}</option>`:women_dropdown.innerHTML+=`<option value='${prod}'>${prod}</option>`;
+                    
+                
                 }
-                women_dropdown.innerHTML+=`
-                <option value='${prod}'>${prod}</option>`
-            
             }
+
+            
         }).catch(err=>{
             // window.location="Page500.html"
             console.log(err);
