@@ -30,6 +30,7 @@ function searchFunction(){
 
 //Onload this function handles fetching category list data for both men and women from the backend and renders the same
 window.onload=function(){
+    // alert(document.cookie);
     var men_dropdown=document.getElementById("cats1");
     var women_dropdown=document.getElementById("cats2");
     fetch('http://127.0.0.1:5002/category/', {
@@ -52,11 +53,11 @@ window.onload=function(){
                     
                 
                 }
-            }
-
-            
+            }    
         }).catch(err=>{
             // window.location="Page500.html"
             console.log(err);
         });
 }
+
+

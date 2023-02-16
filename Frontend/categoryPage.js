@@ -4,14 +4,22 @@ function onLoadSearchQueryHandler(params_dict, page_number, prod_query){
     var product_block=document.getElementById("product_list");
     var final_search_query = `http://127.0.0.1:5002/search/`;
     final_search_query+=prod_query + "?";
+    var current_path="search";
     // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
         if(param[0]=='q'){
+            current_path+="/"+param[1];
             continue
         }
         final_search_query+=`${param[0]}=${encodeURIComponent(param[1])}&`;
     }
     console.log(final_search_query)
+
+    // Render the current path
+    var path_div=document.getElementById("current_path");
+    path_div.style.display="block";
+    path_div.innerHTML+=current_path;
+
     fetch(final_search_query, {
         method: 'GET',
         mode : 'cors',
@@ -35,25 +43,30 @@ function onLoadSearchQueryHandler(params_dict, page_number, prod_query){
             document.getElementById("loader").style.display='none';
             paginationHandler(data[0], page_number)
         }).catch(err=>{
-
             window.location="Page500.html"
             // console.log(err)
             
         });
         return;
 }
+
+
 // Handler for loading the page and fetching data from backend API in case of search operation
 function onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value){
     var product_block=document.getElementById("product_list");
     var final_search_query = `http://127.0.0.1:5002/category/`;
-
+    var current_path="category";
     if (cat2_value == undefined || cat2_value==""){
-        final_search_query+='category1-details/'+cat1_value+"?";
+        final_search_query+=cat1_value+"?";
+        current_path="/"+cat1_value;
     }
     else{
-        
-        final_search_query+='category2-details/'+cat1_value+"/"+cat2_value+"?";
+        current_path="/"+cat1_value+"/"+cat2_value;
+        final_search_query+=cat1_value+"/"+cat2_value+"?";
     }
+    var path_div=document.getElementById("current_path");
+    path_div.style.display="block";
+    path_div.innerHTML+=current_path;
 
     // Append each param to the base url to generate the final url with all the necessary params
     for(const param of params_dict){
@@ -90,6 +103,8 @@ function onLoadCategoryHandler(params_dict, page_number, cat1_value, cat2_value)
             // console.log(err);
         })
 }
+
+
 // Handles enabling and disabling button based on number of products left. Also renders stats like the total number of products and the number of products being displayed
 function paginationHandler(number_of_products, page_number){
     
@@ -97,11 +112,33 @@ function paginationHandler(number_of_products, page_number){
     var whole_pages = Math.floor(number_of_products/10);
     var reminder_page = number_of_products%10;
 
+
+    //ternary operation => does not work
     // Lower end page number check
-    (page_number=='1')?(document.getElementById("page-left").disabled = true):(document.getElementById("page-left").disabled = false)
+    // (page_number=='1')?(document.getElementById("page-left").disabled = true):(document.getElementById("page-left").disabled = false)
 
     // Higher end page number check
-    (Number(page_number)==whole_pages && Number(reminder_page)==0)?document.getElementById("page-right").disabled = true:(Number(page_number)>whole_pages && Number(reminder_page)!=0)?document.getElementById("page-right").disabled = true:document.getElementById("page-right").disabled = false;
+    // (Number(page_number)==whole_pages && Number(reminder_page)==0)?document.getElementById("page-right").disabled = true:((Number(page_number)>whole_pages && Number(reminder_page)!=0)?document.getElementById("page-right").disabled = true:document.getElementById("page-right").disabled = false);
+
+    // Lower end page number check
+    if(page_number=='1'){
+        document.getElementById("page-left").disabled = true;
+    }
+    else{
+        document.getElementById("page-left").disabled = false;
+    }
+
+    // Higer end page number check
+    if(Number(page_number)==whole_pages && Number(reminder_page)==0){
+        document.getElementById("page-right").disabled = true;
+    }
+    else if(Number(page_number)>whole_pages && Number(reminder_page)!=0){
+        document.getElementById("page-right").disabled = true;
+    }
+    else{
+        document.getElementById("page-right").disabled = false;
+    }
+
 
     // Invalid page number recognition
     if ((Number(page_number) > whole_pages+1) || Number(page_number) < 1 || isNaN(page_number)){
@@ -169,6 +206,7 @@ function sortHandler(){
 
 // Handles loading page. Loads random data in case of no category or search operation performed. Else calls the respective functions in case of category or search operations.
 window.onload=function(){
+    // alert(document.cookie);
     document.getElementById("loader").style.display='block';
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
@@ -187,35 +225,8 @@ window.onload=function(){
         onLoadSearchQueryHandler(params_dict, page_number, prod_query);
     }
     else{
+        // Base call
         window.location=`Base.html?q=*&page=1`;
-        // if neither search or category then just get random products
-        var product_block=document.getElementById("product_list");
-        fetch('http://127.0.0.1:5002/search/*?page=1', {
-            method: 'GET',
-            mode : 'cors',
-                    headers: {
-                'Access-Control-Allow-Origin':'*',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-        }).then(response => response.json()).then((data)=>{
-            // data is of the form [number_of_products , list_of_products]
-            for (const prod of data[1]){
-                var tempid=String(prod.uniqueId);
-                product_block.innerHTML+=`
-                <div class="card " onclick="window.open('Product.html?uid=${tempid}','_blank');">
-                    <img id="product_image" src=`+ prod.productImage+`/><br/>
-                    <p id="price-p">$ <span id="price">${prod.price}</span></p>
-                    <p id="desc">${prod.title.charAt(0).toUpperCase() + prod.title.slice(1)}</p>
-                </div> `
-            }
-            document.getElementById("loader").style.display='none';
-            paginationHandler(data[0], page_number);
-        }).catch(err=>{
-            window.location="Page500.html"
-            // console.log(err);
-        });
-        
     }
     
 }

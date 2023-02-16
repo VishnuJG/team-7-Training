@@ -7,7 +7,7 @@ productsCtrlr = (Blueprint("products", __name__))
 
 
 # Retrieves product detials from a single product belonging to a hierarchy of categories
-@productsCtrlr.route('/catalog/<string:uniqueId>', methods=['GET'])
+@productsCtrlr.route('/cat=<string:uniqueId>', methods=['GET'])
 def call_catalog_product_details(uniqueId):
 
     product = Product(uniqueId=uniqueId)
@@ -24,7 +24,7 @@ def call_catalog_product_details(uniqueId):
 
 
 # Retrieves product detials from a single product searched for 
-@productsCtrlr.route('/search/<string:uniqueId>', methods=['GET'])
+@productsCtrlr.route('/ser=<string:uniqueId>', methods=['GET'])
 def call_searched_product_details(uniqueId):
 
     product = Product(uniqueId=uniqueId)

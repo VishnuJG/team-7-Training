@@ -5,7 +5,7 @@ function product_details(data, prod_div){
         <div class="unique_card" >
             <img id="product_image" src=`+ data.productImage+`/><br/>
             <p id="title">${ data.title.charAt(0).toUpperCase() + data.title.slice(1)}</p>
-            <p id="price" >$ ${data.price}</p>
+            <p id="prod-price" >$ ${data.price}</p>
             <p id="desc">${data.productDescription!=null ? data.productDescription : ""}</p>
         </div> `;
     }
@@ -14,6 +14,33 @@ function product_details(data, prod_div){
         window.location = "Page404.html";
     }
     document.getElementById("loader").style.display='none';
+    return;
+}
+
+// Recommendation related calls and functionalities are handled by this function
+function recommender(final_id, header_details){
+    fetch(`http://127.0.0.1:5002/recommendation/${final_id}`, {
+        method: 'GET',
+        mode : 'cors',
+        headers: header_details
+    }).then(response => response.json()).then((data)=>{
+        console.log(data)
+        var rec_div=document.getElementById("recommendations-div");
+        for(const prod in data){
+
+            var tempid=String(data[prod][0]);
+            rec_div.innerHTML+=`
+            <div class="card" onclick="window.open('Product.html?catuid=${tempid}','_blank');">
+                <img id="product_image" src=`+ data[prod][3]+`/><br/>
+                <p id="price-p">$ <span id="price">${data[prod][1]}</span></p>
+                <p id="desc">${data[prod][2]}</p>
+            </div>
+            `
+        }
+    }).catch(err=>{
+        // window.location="Page500.html"
+        console.log(err);
+    })
 }
 
 
@@ -22,6 +49,7 @@ window.onload=function(){
     document.getElementById("loader").style.display='block';
     var prod_div = document.getElementById("unique_product_container");
     const queryString = window.location.search;
+    var final_id;
     const urlParams = new URLSearchParams(queryString);
     const product_id_search = urlParams.get('uid')
     const product_id_cat = urlParams.get('catuid')
@@ -32,8 +60,9 @@ window.onload=function(){
     var final_data;
 
     if(product_id_search!=null){
-        console.log(product_id_search)
-        fetch(`http://127.0.0.1:5002/products/search/${product_id_search}`, {
+        // If the product is from search and is not present in the database
+        final_id=product_id_search;
+        fetch(`http://127.0.0.1:5002/products/ser=${product_id_search}`, {
             method: 'GET',
             mode : 'cors',
             headers: header_details
@@ -47,18 +76,21 @@ window.onload=function(){
             window.location="Page500.html"
             // console.log(err);
         })
+        return;
     }
     else{
-        fetch(`http://127.0.0.1:5002/products/catalog/${product_id_cat}`, {
+        // If the product is from category and is present in the database
+        final_id=product_id_cat;
+        fetch(`http://127.0.0.1:5002/products/cat=${product_id_cat}`, {
             method: 'GET',
             mode : 'cors',
             headers: header_details
         }).then(response => response.json()).then((data)=>{
-            console.log(data)
             product_details(data, prod_div);
         }).catch(err=>{
             window.location="Page500.html"
             // console.log(err);
         })
     }
+    recommender(final_id, header_details);
 }
