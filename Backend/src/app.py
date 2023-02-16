@@ -9,11 +9,13 @@ from controllers.product_ctrlr import productsCtrlr
 from controllers.category_ctrlr import categoryCtrlr
 from controllers.search_ctrlr import searchCtrlr
 from controllers.data_ingestion_ctrlr import ingestionCtrlr
+from controllers.recommendation_ctrl import recommendationCtrlr
 
 app.register_blueprint(productsCtrlr, url_prefix = "/products")
 app.register_blueprint(categoryCtrlr, url_prefix = "/category")
 app.register_blueprint(searchCtrlr, url_prefix = "/search")
 app.register_blueprint(ingestionCtrlr, url_prefix = "/ingestion")
+app.register_blueprint(recommendationCtrlr, url_prefix = "/recommendation")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5002)

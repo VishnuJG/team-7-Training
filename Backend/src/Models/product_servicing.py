@@ -70,6 +70,7 @@ class Product():
         self.productDescription = query_response[0][2]
         self.price = str(query_response[0][3])
         self.productImage= query_response[0][4]
+        
         print("Product request processed")
         return self.product_to_json()
 

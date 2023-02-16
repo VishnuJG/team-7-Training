@@ -25,7 +25,7 @@ def get_category_names():
 
 
 # Retrieves all products present in a a hierarchy of level 1 and level 2 categories
-@categoryCtrlr.route("/category2-details/<string:catlevel1Name>/<string:catlevel2Name>", methods=['GET'])
+@categoryCtrlr.route("/<string:catlevel1Name>/<string:catlevel2Name>", methods=['GET'])
 @cache.cached(timeout=30, query_string=True)
 def fetch_category2_products(catlevel1Name, catlevel2Name=None):
 
@@ -42,7 +42,7 @@ def fetch_category2_products(catlevel1Name, catlevel2Name=None):
 
 
 # Retrieves all products present in a single level 1 category
-@categoryCtrlr.route("/category1-details/<string:catlevel1Name>", methods=['GET'])
+@categoryCtrlr.route("/<string:catlevel1Name>", methods=['GET'])
 @cache.cached(timeout=30, query_string=True)
 def fetch_category1_products(catlevel1Name):
 

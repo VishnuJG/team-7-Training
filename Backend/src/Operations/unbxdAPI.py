@@ -21,7 +21,7 @@ class UnbxdAPI:
         unbxd_val = json.loads(unbxd_val)
         result = []
         for product in unbxd_val['response']['products']:
-            result.append({'uniqueId': product['uniqueId'], 'title': product['title'], 'productdescription': product['productDescription'], 'price': product['price'], 'productimage': product['productImage'], 'catlevel1name': product['catlevel1Name'], 'catlevel2name': product['catlevel2Name']})
+            result.append({'uniqueId': product['uniqueId'], 'title': product['title'], 'productDescription': product['productDescription'], 'price': product['price'], 'productImage': product['productImage']})
 
         return [unbxd_val['response']['numberOfProducts'], result]
 

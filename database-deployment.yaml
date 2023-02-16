@@ -27,7 +27,7 @@ spec:
       containers:
         - env:
             - name: POSTGRES_DB
-              value: unbxddb-container
+              value: unbxddatabase
             - name: POSTGRES_PASSWORD
               value: unbxd
             - name: POSTGRES_USER

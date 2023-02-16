@@ -42,10 +42,10 @@ select:hover{
 }
 
 #search_val{
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left : 20px;
     width:20%;
-    height:10%;
+    height:30px;
     right:60px;
     padding: 0.6em 2em;
     border: none;
@@ -59,7 +59,8 @@ select:hover{
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-	transition: 0.8s;
+	  transition: 0.8s;
+    z-index: 1;
 }
 
 #search_val:focus{
@@ -70,6 +71,7 @@ select:hover{
 
 #search_button {
 	padding: 0.6em 1em;
+  margin-top: 20px;
 	border: none;
 	outline: none;
 	color: rgb(255, 255, 255);
@@ -128,7 +130,7 @@ select:hover{
 	content: "";
 	position: absolute;
 	width: 100%;
-	height: 100%;
+	height: 30px;
 	background: #222;
 	left: 0;
 	top: 0;
@@ -165,14 +167,15 @@ select:hover{
     color:black;
 }
 
-
+                      /* Logo css specifying */
 .logo{
-	margin-left : 30%;
+	margin-left : 40%;
     top:0;
     position: absolute;
     z-index: 0;
 	transition: 0.8s;
     height: 100%;
+    width: 35%;
 }
 
 

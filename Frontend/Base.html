@@ -10,14 +10,18 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="categoryPage.js"></script>
+        <script src="cookies.js"></script>
         
     </head>
     <body style="background-color: #ffffff;">
+        <!-- Header Container -->
         <div class="looksgood" >
-            
-            <iframe class="container-fluid" src="Header.html" title="header" style="width:100%;" height="400" frameBorder="0" ></iframe>
+            <iframe class="container-fluid" src="Header.html" title="header" style="width:100%;" height="150" frameBorder="0" ></iframe>
         </div>
 
+        <!-- Display current path ex:- /search/heels OR /men/New Arrivals -->
+        <div id="current_path" style="display: none;">
+        </div>
         
 
         &nbsp;&nbsp;
@@ -28,7 +32,7 @@
             <option value="price desc">Price-Desc</option>
         </select>
 
-
+        <!-- Loading gif -->
         <div  id="loader"><img class="loader" src="https://cdn.dribbble.com/users/1487848/screenshots/6379337/loading-imwith2.gif"/></div>
 
 
@@ -42,7 +46,6 @@
         &nbsp;
         <!-- Page shifting buttons for next page and previous page -->
         <div class="pagination-div container-fluid col-lg-6" style="display:none" id="pagination-div">
-            
             <button id="page-left" class="pagination-button page-buttons" disabled onclick="pageButtonHandler('left')"> &lt; </button>
             <p id="page-num" class="pagination-button">1</p>
             <button id="page-right" class="pagination-button page-buttons" onclick="pageButtonHandler('right')"> &gt; </button>

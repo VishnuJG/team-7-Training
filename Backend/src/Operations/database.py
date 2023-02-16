@@ -5,6 +5,8 @@ class Database:
     def __init__(self):
         self.conn = ""
         self.host = "db-container"
+        # self.host = "localhost"
+        # self.name = "unbxddb-container"
         self.name = "unbxddatabase"
         self.user = "unbxd"
         self.password = "unbxd"
