@@ -18,40 +18,47 @@ Tech stack:
 # API specs 
 
 ## Category API
-Endpoint to fetch all the category names
+Endpoint to fetch all the subcategory names
 ```
 GET-
 GET /catalog HTTP/1.1
-Host: localhost
+Host: theclothesline.info
 ```
-Endpoint to fetch all the products from a catgeory
+Endpoint to fetch all products belonging to a category
 ```
 GET-
-GET /catalog/category1Name/category2Name?page=*&sort=* HTTP/1.1
-Host: localhost
+GET /category/category1-details/{category1Name}?page=*&sort=* HTTP/1.1
+Host: theclothesline.info
+```
+
+Endpoint to fetch all products belonging to a subcategory
+```
+GET-
+GET /category/category2-details/{category1Name}/{category2Name}?page=*&sort=* HTTP/1.1
+Host: theclothesline.info
 ```
 
 ## Product API
 Endpoint to fetch details about a single product from the search API
 ```
 GET-
-GET /product/(uniqueId)  HTTP/1.1
-Host: localhost
+GET /product/search/{uniqueId}  HTTP/1.1
+Host: theclothesline.info
 ```
 Endpoint to fetch details about a single product from the database
 ```
 GET-
-GET /product/catalog/(uniqueId)  HTTP/1.1
-Host: localhost
+GET /product/catalog/{uniqueId}  HTTP/1.1
+Host: theclothesline.info
 ```
 
 
 ## Search API
-Endpoint to fetch all the products from the UNBXD search API
+Endpoint to fetch product search results from the UNBXD search API
 ```
 GET-
 GET /search?page=*&sort=* HTTP/1.1
-Host: localhost
+Host: theclothesline.info
 ```
 
 ## Ingestion API
@@ -59,7 +66,7 @@ Endpoint to push product details to the database
 ```
 POST-
 POST /ingestion HTTP/1.1
-Host: localhost
+Host: theclothesline.info
 ```
 <hr/>
 
