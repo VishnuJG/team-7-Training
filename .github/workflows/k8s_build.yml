@@ -36,7 +36,9 @@ jobs:
         id: setup-kind
         uses: helm/kind-action@v1.0.0
         with:
-          config: newConfig.yaml
+
+          config: kubernetes/newConfig.yaml
+
 
       - name: Setup Ingress
         id: setup-ingress
@@ -85,4 +87,6 @@ jobs:
         run: |
           sleep 60
           cd $GITHUB_WORKSPACE
+
           newman run ./data/Catalog_testing.postman_collection.json
+
