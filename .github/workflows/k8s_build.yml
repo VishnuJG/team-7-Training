@@ -1,5 +1,5 @@
 name: k8s_build
-run-name: cluster_deployment
+# run-name: cluster_deployment
 on:
   pull_request:
     branches:
