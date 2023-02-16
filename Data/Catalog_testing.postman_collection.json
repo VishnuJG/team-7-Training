@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "f0792e7e-0442-4618-aff8-f4fab673bd75",
+		"name": "Catalog testing",
+		"description": "API calls for an e-commerce website 'The clothes Line' which sells apparel. Includes calls for ingesting products into the databse, accessing the database and accessing the UNBXD API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12936445"
+	},
+	"item": [
+		
+		{
+			"name": "Get category level 2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5002/category/men/Outerwear?sort=asc&page=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"category",
+						"men",
+						"Outerwear"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "asc"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "cat2",
+							"value": "New Arrivals",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Retrieve information about a particular category and subcategory of products. All the products present in that hierarchy are listed."
+			},
+			"response": []
+		},
+		{
+			"name": "Get category level 1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5002/category/women?page=1&sort=asc",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"category",
+						"women"
+					],
+					"query": [
+						{
+							"key": "cat2",
+							"value": "New Arrivals",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "sort",
+							"value": "asc"
+						}
+					]
+				},
+				"description": "Retrieve information about a particular category of products. All the products present in that category are listed."
+			},
+			"response": []
+		},
+		{
+			"name": "Get product details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/products/cat=01705319",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"products",
+						"cat=01705319"
+					]
+				},
+				"description": "Retrieve informartion - including description, price, title, image URL - about a product identified by its unique identifier"
+			},
+			"response": []
+		},
+		{
+			"name": "UNBXD Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/search/skirt?sort=price asc&page=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"search",
+						"skirt"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "price asc"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Retrieve results for product searches from the UNBXD API."
+			},
+			"response": []
+		},
+		{
+			"name": "Category names",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/category",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"category"
+					]
+				},
+				"description": "Retrive all the names of categories at level 1 and subcategories at level 2 from the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Product Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/products/ser=04372191",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"products",
+						"ser=04372191"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
