@@ -36,7 +36,7 @@ jobs:
         id: setup-kind
         uses: helm/kind-action@v1.0.0
         with:
-          config: kubernetes/newConfig.yaml
+          config: newConfig.yaml
 
       - name: Setup Ingress
         id: setup-ingress
