@@ -15,7 +15,7 @@ Tech stack:
 - External API: UNBXD Search API to render search results and product information 
 
 
-# API specs 
+# API specs.
 
 ## Category API
 Endpoint to fetch all the subcategory names
