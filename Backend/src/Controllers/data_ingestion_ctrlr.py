@@ -1,5 +1,6 @@
 from flask import Blueprint, request, Response
 import json
+import os
 import models
 from models.data_ingestion import DataIngestor
 
@@ -25,7 +26,10 @@ def ingest_data():
                     'error': status.split(":")[1].strip()
                 }), status=500, mimetype='application/json')
 
-
+    try:
+        os.remove('./processedDF.pkl')
+    except:
+        print("PKL file does not exist")
     return Response(json.dumps({
                     'status': 'Success'
                 }), status=200, mimetype='application/json')
