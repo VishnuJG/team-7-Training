@@ -37,7 +37,7 @@ jobs:
         uses: helm/kind-action@v1.0.0
         with:
 
-          config: kubernetes/newConfig.yaml
+          config: kubernetes/workerNodes.yaml
 
 
       - name: Setup Ingress
