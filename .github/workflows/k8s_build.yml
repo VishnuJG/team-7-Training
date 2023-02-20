@@ -51,11 +51,11 @@ jobs:
 
     - name: Set-up MetalLB
       run: |
-      kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
-      kubectl wait --namespace metallb-system  --for=condition=ready pod  --selector=app=metallb --timeout=90s
-      kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
-      kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-      kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
+        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+        kubectl wait --namespace metallb-system  --for=condition=ready pod  --selector=app=metallb --timeout=90s
+        kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+        kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
 
     - name: Setup Ingress
       id: setup-ingress
@@ -64,9 +64,10 @@ jobs:
         kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
 
     - name: Apply Kubernetes Manifests
-      run: kubectl apply -f ./kubernetes/deployment/adminer-deployment.yaml,./kubernetes/deployment/api-deployment.yaml,./kubernetes/deployment/database-deployment.yaml,./kubernetes/deployment/redis-deployment.yaml,./kubernetes/deployment/backend-default-networkpolicy.yaml,./kubernetes/deployment/env-configmap.yaml
-      kubectl apply -f ingress/ingress-control.yaml
-      kubectl apply -f ./kubernetes/service/adminer-service.yaml,./kubernetes/service/api-service.yaml,./kubernetes/service/database-service.yaml,./kubernetes/service/kind-frontend.yaml,./kubernetes/service/redis-service.yaml
+      run: |
+        kubectl apply -f ./kubernetes/deployment/adminer-deployment.yaml,./kubernetes/deployment/api-deployment.yaml,./kubernetes/deployment/database-deployment.yaml,./kubernetes/deployment/redis-deployment.yaml,./kubernetes/deployment/backend-default-networkpolicy.yaml,./kubernetes/deployment/env-configmap.yaml
+        kubectl apply -f ingress/ingress-control.yaml
+        kubectl apply -f ./kubernetes/service/adminer-service.yaml,./kubernetes/service/api-service.yaml,./kubernetes/service/database-service.yaml,./kubernetes/service/kind-frontend.yaml,./kubernetes/service/redis-service.yaml
 
     - name: Add Ingress hosts
       id: ingress-hosts
@@ -102,9 +103,9 @@ jobs:
         kubectl logs -l job-name=$HELM_RELEASE
       if: always()
 
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
+    # - name: Setup tmate session
+    #   if: ${{ failure() }}
+    #   uses: mxschmitt/action-tmate@v3
 
     - name: Install newman
       run: |
