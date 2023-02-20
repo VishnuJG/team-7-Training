@@ -1,6 +1,6 @@
 name: k8s_build
 
-on: [pull_request]
+on: [push, pull_request]
 
 # env:
   # HELM_DIR: helm
