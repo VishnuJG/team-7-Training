@@ -66,14 +66,17 @@ jobs:
     - name: Apply Kubernetes Manifests
       run: |
         kubectl apply -f ./kubernetes/deployment/adminer-deployment.yaml,./kubernetes/deployment/api-deployment.yaml,./kubernetes/deployment/database-deployment.yaml,./kubernetes/deployment/redis-deployment.yaml,./kubernetes/deployment/backend-default-networkpolicy.yaml,./kubernetes/deployment/env-configmap.yaml
-        kubectl apply -f ingress/ingress-control.yaml
+        kubectl apply -f ./kubernetes/ingress/ingress-control.yaml
         kubectl apply -f ./kubernetes/service/adminer-service.yaml,./kubernetes/service/api-service.yaml,./kubernetes/service/database-service.yaml,./kubernetes/service/kind-frontend.yaml,./kubernetes/service/redis-service.yaml
 
     - name: Add Ingress hosts
       id: ingress-hosts
       run: |
         echo "127.0.0.1 theclothesline.info" | sudo tee -a /etc/hosts
-        
+    
+    - name: Check port status
+      run: lsof -i -P -n | grep LISTEN
+      
     - name: Wait for ingress
       id: wait-for-ingress
       run: |
@@ -94,8 +97,8 @@ jobs:
         sleep 5
         echo "Done"
 
-    - name: Check port status
-      run: lsof -i -P -n | grep LISTEN
+    # - name: Check port status
+    #   run: lsof -i -P -n | grep LISTEN
 
     - name: print logs
       run: |
