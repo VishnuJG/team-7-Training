@@ -1,0 +1,130 @@
+name: k8s_build
+
+on: [pull_request]
+
+# env:
+  # HELM_DIR: helm
+  # HELM_RELEASE: drone-helm-app
+  # CONTAINER_PORT: 8080
+  # APP_IMAGE: drone-details:v1
+  # ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  build:
+    if: github.repository == 'UNBXD-Assignment1/team-7-Training'
+    runs-on: ubuntu-latest
+    env:
+      TAG: v1
+    steps:
+      
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./backend/src/requirements_tests.txt
+
+      - name: Docker Build and Push
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        docker build -t backend-api-test:v1 ./Backend
+        docker build -t frontend-test:v1 ./Frontend
+        
+        echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+
+        docker tag backend-api-test:v1 $DOCKER_USERNAME/backend-api-test:v1
+        docker push $DOCKER_USERNAME/backend-api-test:v1
+        
+        docker tag frontend-test:v1 $DOCKER_USERNAME/frontend-test:v1
+        docker push $DOCKER_USERNAME/frontend-test:v1
+
+      - name: Create kind cluster
+        id: setup-kind
+        # uses: helm/kind-action@v1.0.0
+        run : |
+          kind create cluster --name clothesline-test --config=./kubernetes/workerNodes.yaml
+
+      - name: Set-up MetalLB
+        run: |
+        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+        kubectl wait --namespace metallb-system  --for=condition=ready pod  --selector=app=metallb --timeout=90s
+        kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+        kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
+
+      - name: Setup Ingress
+          id: setup-ingress
+          run: |
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+            kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
+
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f ./kubernetes/deployment/adminer-deployment.yaml,./kubernetes/deployment/api-deployment.yaml,./kubernetes/deployment/database-deployment.yaml,./kubernetes/deployment/redis-deployment.yaml,./kubernetes/deployment/backend-default-networkpolicy.yaml,./kubernetes/deployment/env-configmap.yaml
+        kubectl apply -f ingress/ingress-control.yaml
+        kubectl apply -f ./kubernetes/service/adminer-service.yaml,./kubernetes/service/api-service.yaml,./kubernetes/service/database-service.yaml,./kubernetes/service/kind-frontend.yaml,./kubernetes/service/redis-service.yaml
+
+      - name: Add Ingress hosts
+        id: ingress-hosts
+        run: |
+          echo "127.0.0.1 theclothesline.info" | sudo tee -a /etc/hosts
+          
+      - name: Wait for ingress
+        id: wait-for-ingress
+        run: |
+          kubectl wait --namespace ingress-nginx \
+                      --for=condition=ready pod \
+                      --selector=app.kubernetes.io/component=controller \
+                      --timeout=90s
+
+      # - name: Waiting Time
+      #   run: |
+      #     echo "Waiting for 75s to ensure pods are running"
+      #     sleep 75
+      #     echo "Done"
+
+        - name: Check pods status
+          run: kubectl get pods
+
+        - name: Port Forward 5002
+          run: kubectl port-forward service/api 5002:5002 &
+
+        - name: Wait for Port Forwarding to begin
+          run: |
+            echo "Waiting 5s for Port-Forwarding to begin"
+            sleep 5
+            echo "Done"
+
+        - name: Check port status
+          run: lsof -i -P -n | grep LISTEN
+
+        - name: print logs
+        run: |
+          kubectl get po
+          kubectl logs -l job-name=$HELM_RELEASE
+        if: always()
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Install newman
+        run: |
+          apt update 
+          apt install nodejs npm -y
+          npm install -g newman 
+
+      - name: Run Postman tests
+        id: postman-test
+        run: |
+          sleep 60
+          cd $GITHUB_WORKSPACE
+          newman run ./data/Catalog_testing.postman_collection.json
+          
+        
