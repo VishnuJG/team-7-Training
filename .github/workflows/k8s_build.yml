@@ -74,9 +74,9 @@ jobs:
       run: |
         echo "127.0.0.1 theclothesline.info" | sudo tee -a /etc/hosts
     
-    - name: Check port status
-      run: lsof -i -P -n | grep LISTEN
-      
+    # - name: Check port status
+    #   run: lsof -i -P -n | grep LISTEN
+
     - name: Wait for ingress
       id: wait-for-ingress
       run: |
