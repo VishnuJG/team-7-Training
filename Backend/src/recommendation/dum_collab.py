@@ -15,7 +15,7 @@ user_means = np.mean(ratings, axis=1)
 
 # Subtract the mean rating from each rating to get the deviations
 deviations = ratings - user_means[:, np.newaxis]
-print(len(deviations))
+# print(len(deviations))
 
 # Calculate the item-item similarity matrix using cosine similarity
 similarity = np.dot(deviations.T, deviations) / (np.linalg.norm(deviations.T, axis=1)[:, np.newaxis] * np.linalg.norm(deviations, axis=0))

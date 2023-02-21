@@ -1,9 +1,7 @@
 version: '3'
 services:
   api:
-    
     container_name: backend-api
-    # image: jgvishnu/backend-api-test:v1
     image: jgvishnu/backend-api:v1
     build: .
     entrypoint: python3 src/wsgi.py
