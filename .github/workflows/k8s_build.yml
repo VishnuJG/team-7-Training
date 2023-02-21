@@ -81,7 +81,7 @@ jobs:
     - name: Check pods status
       run: |
         kubectl get pods
-        sleep 100
+        sleep 30
         kubectl rollout status deployment api
         sleep 15
         POD_NAME=$(kubectl get pod -l app=api -o jsonpath="{.items[0].metadata.name}")
