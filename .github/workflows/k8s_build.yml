@@ -115,11 +115,8 @@ jobs:
         apt update 
         apt install nodejs npm -y
         npm install -g newman 
-
-    - name: Run Postman tests
-      id: postman-test
-      uses: actions/checkout@master
-      uses: matt-ball/newman-action@master
+    - uses: actions/checkout@master
+    - uses: matt-ball/newman-action@master
       with:
         collection: ./data/Catalog_testing.postman_collection.json
       # run: |
