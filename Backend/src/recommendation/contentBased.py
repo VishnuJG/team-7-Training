@@ -7,7 +7,7 @@ from operations.database import Database
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
-from collaborative_filtering import top_n
+# from collaborative_filtering import top_n
 
 
 class ContentBasedRecommender:
