@@ -81,7 +81,7 @@ jobs:
     - name: Check pods status
       run: |
         kubectl get pods
-        sleep 15
+        sleep 100
         kubectl rollout status deployment api
         sleep 15
         kubectl cluster-info dump
