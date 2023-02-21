@@ -32,23 +32,20 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        docker build -t backend-api-test:v1 ./Backend
-        docker build -t frontend-test:v1 ./Frontend
+        docker build -t backend-api:v1 ./Backend
+        docker build -t thakur:v1 ./Frontend
         
         echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-
-        docker tag backend-api-test:v1 $DOCKER_USERNAME/backend-api-test:v1
-        docker push $DOCKER_USERNAME/backend-api-test:v1
+        docker tag backend-api-test:v1 $DOCKER_USERNAME/backend-api:v1
+        docker push $DOCKER_USERNAME/backend-api:v1
         
-        docker tag frontend-test:v1 $DOCKER_USERNAME/frontend-test:v1
-        docker push $DOCKER_USERNAME/frontend-test:v1
-
+        docker tag frontend-test:v1 $DOCKER_USERNAME/thakur:v1
+        docker push $DOCKER_USERNAME/thakur:v1
     - name: Create kind cluster
       id: setup-kind
       # uses: helm/kind-action@v1.0.0
       run : |
         kind create cluster --name clothesline-test --config=./kubernetes/workerNodes.yaml
-
     - name: Set-up MetalLB
       run: |
         kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
@@ -56,19 +53,16 @@ jobs:
         kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
         kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
-
     - name: Setup Ingress
       id: setup-ingress
       run: |
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
         kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
-
     - name: Apply Kubernetes Manifests
       run: |
         kubectl apply -f ./kubernetes/deployment/adminer-deployment.yaml,./kubernetes/deployment/api-deployment.yaml,./kubernetes/deployment/database-deployment.yaml,./kubernetes/deployment/redis-deployment.yaml,./kubernetes/deployment/backend-default-networkpolicy.yaml,./kubernetes/deployment/env-configmap.yaml
         kubectl apply -f ./kubernetes/ingress/ingress-control.yaml
         kubectl apply -f ./kubernetes/service/adminer-service.yaml,./kubernetes/service/api-service.yaml,./kubernetes/service/database-service.yaml,./kubernetes/service/kind-frontend.yaml,./kubernetes/service/redis-service.yaml
-
     - name: Add Ingress hosts
       id: ingress-hosts
       run: |
@@ -84,14 +78,13 @@ jobs:
                     --for=condition=ready pod \
                     --selector=app.kubernetes.io/component=controller \
                     --timeout=90s
-
     - name: Check pods status
       run: |
         kubectl get pods
         sleep 15
         kubectl rollout status deployment api
         sleep 15
-
+        kubectl cluster-info dump
     - name: Port Forward 5002
       run: kubectl port-forward service/api 5002:5002 &
 
@@ -100,7 +93,6 @@ jobs:
         echo "Waiting 5s for Port-Forwarding to begin"
         sleep 5
         echo "Done"
-
     # - name: Check port status
     #   run: lsof -i -P -n | grep LISTEN
 
@@ -122,10 +114,8 @@ jobs:
     - uses: actions/checkout@master
     - uses: matt-ball/newman-action@master
       with:
-        collection: ./data/Catalog_testing.postman_collection.json
+        collection: ./Data/Catalog_testing.postman_collection.json
       # run: |
       #   sleep 60
       #   cd $GITHUB_WORKSPACE
-      #   newman run ./data/Catalog_testing.postman_collection.json
-        
-        
+      #   newman run ../../data/Catalog_testing.postman_collection.json

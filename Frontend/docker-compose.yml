@@ -1,8 +1,8 @@
 version: '3'
 services:
   frontend:
-    # image: jgvishnu/thakur:v1
-    image: jgvishnu/frontend-test:v1
+    image: jgvishnu/thakur:v1
+    # image: jgvishnu/frontend-test:v1
     restart : always
     ports:
       - "80:80"

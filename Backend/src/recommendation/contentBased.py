@@ -1,16 +1,12 @@
 import sys
 sys.path.append('..')
-import operations, models
+import operations
 from operations.database import Database
 
 # from queries import *
-import json
-import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
 import pandas as pd
-import psycopg2
 
 
 class ContentBasedRecommender:
