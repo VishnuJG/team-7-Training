@@ -118,9 +118,13 @@ jobs:
 
     - name: Run Postman tests
       id: postman-test
-      run: |
-        sleep 60
-        cd $GITHUB_WORKSPACE
-        newman run ./data/Catalog_testing.postman_collection.json
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+      with:
+        collection: ./data/Catalog_testing.postman_collection.json
+      # run: |
+      #   sleep 60
+      #   cd $GITHUB_WORKSPACE
+      #   newman run ./data/Catalog_testing.postman_collection.json
         
         
