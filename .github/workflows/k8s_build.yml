@@ -102,6 +102,9 @@ jobs:
       run: |
         kubectl get po
         kubectl logs -l job-name=$HELM_RELEASE
+        POD_NAME=$(kubectl get pod -l app=api -o jsonpath="{.items[0].metadata.name}")
+        echo $POD_NAME container found
+        kubectl describe pod $POD_NAME
       if: always()
 
     # - name: Setup tmate session
