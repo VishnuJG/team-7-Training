@@ -84,7 +84,9 @@ jobs:
         sleep 100
         kubectl rollout status deployment api
         sleep 15
-        kubectl cluster-info dump
+        POD_NAME=$(kubectl get pod -l app=api -o jsonpath="{.items[0].metadata.name}")
+        echo $POD_NAME container found
+        kubectl describe pod $POD_NAME
     - name: Port Forward 5002
       run: kubectl port-forward service/api 5002:5002 &
 
