@@ -68,7 +68,8 @@ df['err'] = abs(df.est - df.rui)
 # Get top 10 recommendations
 best_predictions = df.sort_values(by='err')[:10]
 worst_predictions = df.sort_values(by='err')[-10:]
-top_n = 
+top_n = best_predictions['iid'].tolist()[:10]
+
 # print(best_predictions)
 
 # Recommend items to a user

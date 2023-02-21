@@ -21,6 +21,7 @@ spec:
         kompose.version: 1.28.0 (HEAD)
       creationTimestamp: null
       labels:
+        app: api
         io.kompose.network/backend-default: "true"
         io.kompose.service: api
     spec:

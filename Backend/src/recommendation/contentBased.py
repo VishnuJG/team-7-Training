@@ -7,6 +7,7 @@ from operations.database import Database
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
+from collaborative_filtering import top_n
 
 
 class ContentBasedRecommender:
@@ -37,3 +38,9 @@ class ContentBasedRecommender:
         temp = pd.concat([df.iloc[recommendations.index], sim_score], axis=1)        
         y = db.read_from_db("SELECT uniqueId, price, title, image_url from product_table where uniqueId in %s", (tuple(temp['uniqueID'].dropna()), ))        
         return y
+
+
+    def weighted_preds(self, content_preds):
+        df_weighted = content_preds['Score']
+        
+
