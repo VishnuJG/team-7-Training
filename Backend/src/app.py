@@ -5,11 +5,11 @@ import sys
 sys.path.append('..')
 from cacher import app
 from flask import Blueprint
-from controllers.product_ctrlr import productsCtrlr
-from controllers.category_ctrlr import categoryCtrlr
-from controllers.search_ctrlr import searchCtrlr
-from controllers.data_ingestion_ctrlr import ingestionCtrlr
-from controllers.recommendation_ctrl import recommendationCtrlr
+from Controllers.product_ctrlr import productsCtrlr
+from Controllers.category_ctrlr import categoryCtrlr
+from Controllers.search_ctrlr import searchCtrlr
+from Controllers.data_ingestion_ctrlr import ingestionCtrlr
+from Controllers.recommendation_ctrl import recommendationCtrlr
 
 app.register_blueprint(productsCtrlr, url_prefix = "/products")
 app.register_blueprint(categoryCtrlr, url_prefix = "/category")

@@ -1,4 +1,4 @@
-import operations, models
+import Operations, Models
 from Operations.database import Database
 from Models.product_servicing import Product
 from queries import *

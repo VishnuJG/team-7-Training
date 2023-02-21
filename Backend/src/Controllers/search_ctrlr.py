@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask, request
-import models
+import Models
 from Models.search_servicing import Search
 
 

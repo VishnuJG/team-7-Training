@@ -1,7 +1,7 @@
 from flask import Blueprint, request, Response
 import json
 import os
-import models
+import Models
 from Models.data_ingestion import DataIngestor
 
 ingestionCtrlr = (Blueprint("ingestion", __name__))

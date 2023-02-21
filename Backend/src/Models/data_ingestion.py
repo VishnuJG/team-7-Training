@@ -1,4 +1,4 @@
-import operations
+import Operations
 from Operations.database import Database
 from queries import *
 

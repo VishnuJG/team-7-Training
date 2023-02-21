@@ -1,6 +1,6 @@
 from queries import *
 import json
-import operations
+import Operations
 from Operations.unbxdAPI import UnbxdAPI
 from Operations.database import Database
 

@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
-import operations
-from operations.database import Database
+import Operations
+from Operations.database import Database
 
 # from queries import *
 from sklearn.feature_extraction.text import CountVectorizer
