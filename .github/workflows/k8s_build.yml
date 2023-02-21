@@ -87,10 +87,10 @@ jobs:
 
     - name: Check pods status
       run: |
-      kubectl get pods
-      sleep 15
-      kubectl rollout status deployment api
-      sleep 15
+        kubectl get pods
+        sleep 15
+        kubectl rollout status deployment api
+        sleep 15
 
     - name: Port Forward 5002
       run: kubectl port-forward service/api 5002:5002 &
