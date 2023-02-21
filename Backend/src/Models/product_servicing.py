@@ -1,8 +1,8 @@
 from queries import *
 import json
 import operations
-from operations.unbxdAPI import UnbxdAPI
-from operations.database import Database
+from Operations.unbxdAPI import UnbxdAPI
+from Operations.database import Database
 
 
 class Product():

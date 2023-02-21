@@ -1,6 +1,6 @@
 import operations, models
-from operations.database import Database
-from models.product_servicing import Product
+from Operations.database import Database
+from Models.product_servicing import Product
 from queries import *
 import json
 

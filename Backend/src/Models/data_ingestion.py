@@ -1,5 +1,5 @@
 import operations
-from operations.database import Database
+from Operations.database import Database
 from queries import *
 
 class DataIngestor:

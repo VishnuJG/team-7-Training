@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 
 from cacher import cache
-from models.category_servicing import Category, render_subcategory_names
+from Models.category_servicing import Category, render_subcategory_names
 categoryCtrlr = (Blueprint("category", __name__))
 
 
