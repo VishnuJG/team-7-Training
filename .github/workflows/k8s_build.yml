@@ -36,10 +36,10 @@ jobs:
         docker build -t thakur:v1 ./Frontend
         
         echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-        docker tag backend-api-test:v1 $DOCKER_USERNAME/backend-api:v1
+        docker tag backend-api:v1 $DOCKER_USERNAME/backend-api:v1
         docker push $DOCKER_USERNAME/backend-api:v1
         
-        docker tag frontend-test:v1 $DOCKER_USERNAME/thakur:v1
+        docker tag thakur:v1 $DOCKER_USERNAME/thakur:v1
         docker push $DOCKER_USERNAME/thakur:v1
     - name: Create kind cluster
       id: setup-kind
