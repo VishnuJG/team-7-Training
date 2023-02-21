@@ -118,8 +118,8 @@ jobs:
 
     - name: Run Postman tests
       id: postman-test
-      - uses: actions/checkout@master
-      - uses: matt-ball/newman-action@master
+      uses: actions/checkout@master
+      uses: matt-ball/newman-action@master
       with:
         collection: ./data/Catalog_testing.postman_collection.json
       # run: |
